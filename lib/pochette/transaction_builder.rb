@@ -108,7 +108,7 @@ protected
     utxo_blacklist = options[:utxo_blacklist] || []
     all_utxos = Pochette.backend.list_unspent(addresses)
     available_utxos = all_utxos.reject do |utxo|
-      utxo_blacklist.include?(utxo[1]) || utxo_is_blacklisted?(utxo)
+      utxo_blacklist.include?([utxo[1], utxo[2]])
     end
     
     self.inputs = []
@@ -149,9 +149,5 @@ protected
     if inputs_amount < (outputs_amount + minimum_fee)
       errors << :insufficient_funds
     end
-  end
-
-  def utxo_is_blacklisted?(utxo)
-    false
   end
 end

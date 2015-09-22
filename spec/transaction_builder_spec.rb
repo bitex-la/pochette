@@ -136,7 +136,7 @@ describe Pochette::TransactionBuilder do
   it 'can blacklist utxos' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 3_0000_0000]]
-    blacklist = ["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72"]
+    blacklist = [["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1]]
     transaction = Pochette::TransactionBuilder.new(addresses: addresses,
        outputs: outputs, utxo_blacklist: blacklist).as_hash
     transaction.should == {

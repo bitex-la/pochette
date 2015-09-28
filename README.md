@@ -82,45 +82,57 @@ you can query the results via to_hash.
 The TransactionBuilder's initializer receives a single options hash with:
 
 <dl>
-<dd>addresses:</dd>
-<dt>
+<dt>addresses:</dt>
+<dd>
   List of addresses in wallet.
   We will be spending their unspent outputs.
-</dt>
-<dd>outputs:</dd>
-<dt>
+</dd>
+<dt>outputs:</dt>
+<dd>
   List of pairs [recipient_address, amount]
   This will not be all the final outputs in the transaction,
-  as a 'change' output may be added if needed.
-</dt>
-<dd>utxo_blacklist:</dd>
-<dt>
+  as a 'change' output may be adted if needed.
+</dd>
+<dt>utxo_blacklist:</dt>
+<dd>
   Optional. List of utxos to ignore, a list of pairs [transaction hash, position]
-</dt>
-<dd>change_address:</dd>
-<dt>
+</dd>
+<dt>change_address:</dt>
+<dd>
   Optional. Change address to use. Will default to the first source address.
-</dt>
-<dd>fee_per_kb:</dd>
-<dt>
+</dd>
+<dt>fee_per_kb:</dt>
+<dd>
   Optional. Defaults to 10000 satoshis.
-</dt>
-<dd>spend_all:</dd>
-<dt>
+</dd>
+<dt>spend_all:</dt>
+<dd>
   Optional. Boolean. Wether to spend all available utxos or just select enough to
   cover the given outputs.
-</dt>
+</dd>
 </dl>
 
 #### Returns
 
 A hash with
 
-input_total: The sum of all input amounts, in satoshis.
-output_total: The sum of all outputs, in satoshis.
-fee: fee to pay (input_total - output_total).
-outputs: Array of [destination address, amount in satoshis]
-inputs: Array of [input address, utxo transaction hash, utxo position, amount]
+<dl>
+<dt>input_total:</dt>
+<dd>The sum of all input amounts, in satoshis.</dd>
+<dt>output_total:</dt>
+<dd>The sum of all outputs, in satoshis.</dd>
+<dt>fee:</dt>
+<dd>fee to pay (input_total - output_total).</dd>
+<dt>outputs:</dt>
+<dd>Array of [destination address, amount in satoshis]</dd>
+<dt>inputs:</dt>
+<dd>Array of [input address, utxo transaction hash, utxo position, amount]</dd>
+<dt>utxos_to_blacklist:</dt>
+<dd>
+  Transaction inputs formatted to be used as utxo_blacklist on another
+  TransactionBuilder.
+</dd>
+</dl>
 
 
       >>> require 'pochette'

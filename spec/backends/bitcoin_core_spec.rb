@@ -177,4 +177,14 @@ describe Pochette::Backends::BitcoinCore do
       :script_pubkey=>"76a914d147f4d2921056aa6d8c6a57f8aad4d68523959e88ac"}, {:amount=>603582319,
       :script_pubkey=>"76a914c01a7ca16b47be50cbdbc60724f701d52d75156688ac"}]}]
   end
+
+  it 'implements block height' do
+    stub_rpc('getinfo', [], 'getinfo')
+    backend.block_height.should == 315281
+  end
+
+  it 'implements pushtx' do
+    stub_rpc('sendrawtransaction', [], 'sendrawtransaction')
+    backend.pushtx('sometransaction').should == 'f5a5ce5988cc72b9b90e8d1d6c910cda53c88d2175177357cc2f2cf0899fbaad'
+  end
 end

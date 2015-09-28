@@ -3,25 +3,13 @@
 # Instantiating will perform all the given queries, you'll be left with a
 # TransactionBuilder object that is either valid? or not, and if valid
 # you can query the results via to_hash.
-# Options:
-#   addresses:
-#     List of addresses in wallet.
-#     We will be spending their unspent outputs.
-#   outputs:
-#     List of pairs [recipient_address, amount]
-#     This will not be all the final outputs in the transaction,
-#     as a 'change' output may be added if needed.
-#   utxo_blacklist:
-#     List of utxos to ignore, a list of pairs [transaction hash, position]
-#   change_address:
-#     Change address to use. Will default to the first source address.
-#   fee_per_kb:
-#     Defaults to 10000 satoshis.
-#   spend_all:
-#     Wether to spend all available utxos or just select enough to
-#     cover the given outputs.
 
 class Pochette::TransactionBuilder
+  # Backend can be set globally, or independently for each class and instance.
+  class_attribute :backend
+  def self.backend
+    @backend || Pochette.backend
+  end
 
   cattr_accessor(:dust_size){ 546 }
   cattr_accessor(:output_size){ 149 }
@@ -30,6 +18,7 @@ class Pochette::TransactionBuilder
   cattr_accessor(:default_fee_per_kb){ 10000 }
 
   def initialize(options)
+    self.backend = options[:backend] if options[:backend]
     initialize_options(options)
     return unless valid?
     initialize_fee
@@ -42,10 +31,13 @@ class Pochette::TransactionBuilder
 
   def as_hash
     return nil unless valid?
-    { amount: inputs_amount,
+    { input_total: inputs_amount,
+      output_total: outputs_amount,
       fee: inputs_amount - outputs_amount,
       inputs: inputs,
-      outputs: outputs}
+      outputs: outputs,
+      utxos_to_blacklist: inputs.collect{|i| [i[1], i[2]] },
+    }
   end
 
   def valid?

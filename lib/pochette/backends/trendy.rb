@@ -42,6 +42,13 @@ class Pochette::Backends::Trendy
   # [[address, txid, position (vout), amount (in satoshis)], ...]
   def list_unspent(addresses)
     backend.list_unspent(addresses)
+  rescue OpenURI::HTTPError => e
+    # Blockchain.info returns 500 when there are no unspent outputs
+    if e.io.read == "No free outputs to spend"
+      return []
+    else
+      raise
+    end
   end
 
   # Gets information for the given transactions

@@ -15,15 +15,20 @@ describe Pochette::TransactionBuilder do
     transaction = Pochette::TransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.should be_valid
     transaction.as_hash.should == {
-      amount: 2_0000_0000,
+      input_total: 2_0000_0000,
+      output_total: 1_9999_0000,
+      fee: 10000,
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 1_0000_0000],
         ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 9999_0000],
       ],
       inputs: [["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
         "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
-        1, 200000000]],
-      fee: 10000
+        1, 200000000]
+      ],
+      utxos_to_blacklist: [
+        ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
+      ],
     }
   end
 
@@ -33,7 +38,9 @@ describe Pochette::TransactionBuilder do
     transaction = Pochette::TransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.should be_valid
     transaction.as_hash.should == {
-      amount: 4_0000_0000,
+      input_total: 4_0000_0000,
+      output_total: 3_9999_0000,
+      fee: 10000,
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 3_0000_0000],
         ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 9999_0000],
@@ -46,7 +53,10 @@ describe Pochette::TransactionBuilder do
           "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72",
           1, 200000000]
       ],
-      fee: 10000
+      utxos_to_blacklist: [
+        ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
+        ["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1]
+      ],
     }
   end
 
@@ -66,7 +76,8 @@ describe Pochette::TransactionBuilder do
        outputs: outputs, spend_all: true)
     transaction.should be_valid
     transaction.as_hash.should == {
-      amount: 600000000,
+      input_total: 6_0000_0000,
+      output_total: 5_9999_0000,
       fee: 10000,
       inputs: [
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
@@ -82,6 +93,11 @@ describe Pochette::TransactionBuilder do
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 100000000],
         ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 499990000]
+      ],
+      utxos_to_blacklist: [
+        ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
+        ["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1],
+        ["1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 1],
       ]
     }
   end
@@ -92,7 +108,8 @@ describe Pochette::TransactionBuilder do
     transaction = Pochette::TransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.should be_valid
     transaction.as_hash.should == {
-      amount: 400000000,
+      input_total: 4_0000_0000,
+      output_total: 3_9999_0000,
       fee: 10000,
       inputs: [
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
@@ -105,6 +122,10 @@ describe Pochette::TransactionBuilder do
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 200000000],
         ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 199990000]
+      ],
+      utxos_to_blacklist: [
+        ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
+        ["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1]
       ]
     }
   end
@@ -116,7 +137,8 @@ describe Pochette::TransactionBuilder do
       outputs: outputs, fee_per_kb: 100000)
     transaction.should be_valid
     transaction.as_hash.should == {
-      amount: 400000000,
+      input_total: 4_0000_0000,
+      output_total: 3_9996_2200,
       fee: 37800,
       inputs: [
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
@@ -129,6 +151,10 @@ describe Pochette::TransactionBuilder do
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 300000000],
         ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",  99962200]
+      ],
+      utxos_to_blacklist: [
+        ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
+        ["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1]
       ]
     }
   end
@@ -140,7 +166,8 @@ describe Pochette::TransactionBuilder do
     transaction = Pochette::TransactionBuilder.new(addresses: addresses,
        outputs: outputs, utxo_blacklist: blacklist).as_hash
     transaction.should == {
-      amount: 400000000,
+      input_total: 4_0000_0000,
+      output_total: 3_9999_0000,
       fee: 10000,
       inputs: [
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
@@ -153,7 +180,11 @@ describe Pochette::TransactionBuilder do
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 300000000],
         ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",  99990000]
-      ]
+      ],
+      utxos_to_blacklist: [
+        ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
+        ["1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 1],
+      ],
     }
   end
 
@@ -196,7 +227,8 @@ describe Pochette::TransactionBuilder do
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 3_9998_9600]]
     transaction = Pochette::TransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.as_hash.should == {
-      amount: 400000000,
+      input_total: 400000000,
+      output_total: 399989600,
       fee: 10400,
       inputs: [
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
@@ -208,7 +240,11 @@ describe Pochette::TransactionBuilder do
       ],
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 399989600],
-      ]
+      ],
+      utxos_to_blacklist: [
+        ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
+        ["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1],
+      ],
     }
   end
 

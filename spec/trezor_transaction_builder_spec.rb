@@ -17,9 +17,14 @@ describe Pochette::TrezorTransactionBuilder do
     transaction.should be_valid
 
     transaction.as_hash.should == {
-      amount: 4_0000_0000,
+      input_total: 4_0000_0000,
+      output_total: 3_9999_0000,
       fee: 10000,
       outputs: [
+        ["1Gaor6PAAP3bV4aks6ydKHKEwiF7GfXTTF", 300000000], 
+        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 99990000]
+      ],
+      trezor_outputs: [
         { script_type: 'PAYTOADDRESS',
           address: "1Gaor6PAAP3bV4aks6ydKHKEwiF7GfXTTF",
           amount: 3_0000_0000 },
@@ -28,6 +33,12 @@ describe Pochette::TrezorTransactionBuilder do
           amount: 9999_0000 },
       ],
       inputs: [
+        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
+          "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1, 200000000],
+        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
+          "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1, 200000000]
+      ],
+      trezor_inputs: [
         { address_n: [42,1,1],
           prev_hash: "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
           prev_index: 1},
@@ -79,6 +90,10 @@ describe Pochette::TrezorTransactionBuilder do
             { amount: 681715, script_pubkey: "5c7861393134..."}
           ]
         }
+      ],
+      utxos_to_blacklist: [
+        ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
+        ["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1],
       ],
     }
   end

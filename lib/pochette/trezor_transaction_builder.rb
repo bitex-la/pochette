@@ -44,11 +44,10 @@ class Pochette::TrezorTransactionBuilder < Pochette::TransactionBuilder
 
   def as_hash
     return nil unless valid?
-    { amount: inputs_amount,
-      fee: inputs_amount - outputs_amount,
-      inputs: trezor_inputs,
-      outputs: trezor_outputs,
-      transactions: transactions}
+    super.merge(
+      trezor_inputs: trezor_inputs,
+      trezor_outputs: trezor_outputs,
+      transactions: transactions)
   end
 
 protected

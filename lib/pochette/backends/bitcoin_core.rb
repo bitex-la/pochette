@@ -102,4 +102,8 @@ class Pochette::Backends::BitcoinCore
   def block_height
     client.getinfo[:blocks]
   end
+
+  def pushtx(hex)
+    client.sendrawtransaction(hex)
+  end
 end

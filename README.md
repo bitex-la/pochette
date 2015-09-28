@@ -66,7 +66,7 @@ a Pochette::TransactionBuilder
       >>> Pochette::TrezorTransactionBuilder.backend = Pochette::Backends::BlockchainInfo.new
 
 Pochette can also be configured to use the bitcoin testnet, this will change
-the default network used by the Bitcoin gem and may the way backends work too.
+the default network used by the Bitcoin gem and may alter the way backends work too.
 
       >>> Pochette.testnet = true
 
@@ -167,6 +167,9 @@ A hash with
               1,
               200000000
             ],
+          ],
+          utxos_to_blacklist: [
+            ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1]
           ],
          }
 
@@ -285,6 +288,10 @@ trezor_outputs:
                 { amount: 200000000, script_pubkey: "76a914988cb8253f4e28be6e8bfded1b4aa11c646e1a8588ac"}
               ]
             }
+          ],
+          utxos_to_blacklist: [
+            ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1]
+          ],
          }
 
 ## incoming_for(addresses, min_date)
@@ -293,21 +300,22 @@ The incoming_for method is useful when registering deposits received to
 a number of bitcoin addresses.
 
 #### Receives
-  - addresses: A list of public bitcoin addresses to check for incoming transactions.
-  - min_date: Do not check for deposits earlier than this date. This is only to prevent
-      fetching too many results if the backend was to return too many,
-      each backend may apply its own limits so higher value here is not guaranteed to
-      fetch more results.
+- addresses: A list of public bitcoin addresses to check for incoming transactions.
+- min_date: Do not check for deposits earlier than this date. This is only to prevent
+    fetching too many results if the backend was to return too many,
+    each backend may apply its own limits so higher value here is not guaranteed to
+    fetch more results.
 
 #### Returns
   A list with
 
-  - Amount received, in satoshis.
-  - Address which received the deposit.
-  - Transaction hash for the deposit.
-  - Confirmations for the transaction. 
-  - Position of this deposit in the transaction outputs list.
-  - Senders, as a comma-separated list of addresses (no whitespaces)
+- Amount received, in satoshis.
+- Address which received the deposit.
+- Transaction hash for the deposit.
+- Confirmations for the transaction. 
+- Position of this deposit in the transaction outputs list.
+- Senders, as a comma-separated list of addresses (no whitespaces)
+
 
 
       >>> require 'pochette'
@@ -439,11 +447,11 @@ You may not want to use this directly and use Pochette::TrezorTransactionBuilder
 instead.
 
 #### Receives
-  - Transactions: A list of Transaction hashes.
+  - Transactions: A list of Transaction ids
 
 #### Returns
-  A list of transaction hashes
-  
+  A list of ruby hashes will transaction data for each id passed.
+
       >>> require 'pochette'
       >>> backend = Pochette::Backends::BlockchainInfo.new
       >>> transactions = [
@@ -500,7 +508,7 @@ Propagates a raw transaction to the network.
   - transaction: A raw transaction in hex format
 
 #### Returns
-  Transaction hash
+  The transaction id (hash)
   
       >>> require 'pochette'
       >>> hex = "0100000001d11a6cc978fc41aaf5b24fc5c8ddde71fb91ffdba9579cd62ba20fc284b2446c000000008a47304402206d2f98829a9e5017ade2c084a8b821625c35aeaa633f718b1c348906afbe68b00220094cb8ee519adcebe866e655532abab818aa921144bd98a12491481931d2383a014104e318459c24b89c0928cec3c9c7842ae749dcca78673149179af9155c80f3763642989df3ffe34ab205d02e2efd07e9a34db2f00ed8b821dd5bb087ff64df2c9effffffff0280f0fa02000000001976a9149b754a70b9a3dbb64f65db01d164ef51101c18d788ac40aeeb02000000001976a914aadf5d54eda13070d39af72eb5ce40b1d3b8282588ac00000000"
@@ -508,7 +516,7 @@ Propagates a raw transaction to the network.
       >>> backend.pushtx(hex)
       => 'fb92420f73af6d25f5fab93435bc6b8ebfff3a07c02abd053f0923ae296fe380'
 
-## BitcoinCore backend.
+## BitcoinCore backend
 
 Pochette will connect to your bitcoin-core node via JSON-RPC, using the
 [bitcoin-rpc gem](https://github.com/bitex-la/bitcoin-rpc)
@@ -533,6 +541,9 @@ sleeping a bit after each request to prevent blockchain.info from banning your I
 This backend is probably the slowest one but also the one that's more convenient for
 testing and managing small wallets.
 
+This backend is not usable for testnet transactions, all queries will be done to the
+main network.
+
 You can create a blockchain.info backend like this
 
       >>> Pochette::Backends::BlockchainInfo.new
@@ -543,7 +554,7 @@ API key you can configure your backend like so:
       >>> Pochette::Backends::BlockchainInfo.cooldown = 0.1 # Make the cooldown a tenth of a second
       >>> Pochette.backend = Pochette::Backends::BlockchainInfo.new("your_api_key")
 
-## Using a Toshi backend.
+## Toshi backend
 
 Pochette will connect to your Toshi node's postgres database directly.
 It's provided as a separate gem as it depends on the pg gem which needs local

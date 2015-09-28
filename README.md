@@ -23,7 +23,7 @@ including transactions, inputs and outputs that are formatted in a way they can
 be passed directly to a Trezor device for signing.
 
 ## Table of contents
-- Setup
+- [Installation and Setup](#setup)
 - TransactionBuilder
 - TrezorTransactionBuilder
 - Backend API
@@ -39,7 +39,7 @@ be passed directly to a Trezor device for signing.
   - Toshi Backend
   - Trendy Backend
 
-## Installation
+## Installation and Setup
 
 Add this line to your application's Gemfile:
 
@@ -55,7 +55,7 @@ Or install it yourself as:
 
     $ gem install pochette
 
-### Setup
+## Setup
 
 You will probably want to setup Pochette with a global default backend,
 the backend can also be configured separately for each instance of
@@ -70,7 +70,7 @@ the default network used by the Bitcoin gem and may the way backends work too.
 
       >>> Pochette.testnet = true
 
-### The Pochette::TransactionBuilder
+## The Pochette::TransactionBuilder
 
 The TransactionBuilder builds transactions from a list of source addresses and a list of recipients,
 using a configured backend to fetch unspent outputs and related transaction data.
@@ -81,22 +81,36 @@ you can query the results via to_hash.
 #### Receives
 The TransactionBuilder's initializer receives a single options hash with:
 
-addresses:
+<dl>
+<dd>addresses:</dd>
+<dt>
   List of addresses in wallet.
   We will be spending their unspent outputs.
-outputs:
+</dt>
+<dd>outputs:</dd>
+<dt>
   List of pairs [recipient_address, amount]
   This will not be all the final outputs in the transaction,
   as a 'change' output may be added if needed.
-utxo_blacklist:
+</dt>
+<dd>utxo_blacklist:</dd>
+<dt>
   Optional. List of utxos to ignore, a list of pairs [transaction hash, position]
-change_address:
+</dt>
+<dd>change_address:</dd>
+<dt>
   Optional. Change address to use. Will default to the first source address.
-fee_per_kb:
+</dt>
+<dd>fee_per_kb:</dd>
+<dt>
   Optional. Defaults to 10000 satoshis.
-spend_all:
+</dt>
+<dd>spend_all:</dd>
+<dt>
   Optional. Boolean. Wether to spend all available utxos or just select enough to
   cover the given outputs.
+</dt>
+</dl>
 
 #### Returns
 
@@ -144,7 +158,7 @@ inputs: Array of [input address, utxo transaction hash, utxo position, amount]
           ],
          }
 
-### Building for Trezor with Pochette::TrezorTransactionBuilder
+## Building for Trezor with Pochette::TrezorTransactionBuilder
 
 Builds a transaction like TransactionBuilder but includes transaction data
 and formats inputs and outputs in a way that can be sent directly to your trezor
@@ -261,11 +275,7 @@ trezor_outputs:
             }
          }
 
-## Common Backend API
-
-Pochette defines a homogeneous API to query a number of possible backends.
-
-### incoming_for(addresses, min_date)
+## incoming_for(addresses, min_date)
 
 The incoming_for method is useful when registering deposits received to
 a number of bitcoin addresses.
@@ -320,7 +330,7 @@ a number of bitcoin addresses.
             "my2hmDuD9XjmtQWFu9HyyNAsE5WGSDBKpQ"]
          ]
 
-### balances_for(addresses, confirmations)
+## balances_for(addresses, confirmations)
 
 Gets confirmed and unconfirmed sent, received and total balances for the given
 addresses. It's useful for payment processing as you can see what's the total
@@ -365,7 +375,7 @@ amount seen on the network for a given address, and the final confirmed amount a
       "mzbXim4u1Nq4J2kVggu471pZL3ahxNkmE9" =>
         [0.005, 0.0, 0.005, 0.005, 0.0, 0.005],
 
-### list_unspent(addresses)
+## list_unspent(addresses)
 
 Gets unspent transaction outputs (a.k.a. utxos) for all the given addresses.
 You may not need to use this directly, but rather through a
@@ -409,7 +419,7 @@ Pochette::TransactionBuilder which is smart about selecting utxos.
         "ff768084764a05d1de72628432c0a4419538b2786089ec8ad009f6096bc69fe1", 0, 500000]
       ]
 
-### list_transactions(txids)
+## list_transactions(txids)
 
 List full transaction data for the given transaction hashes. The output 
 is formatted for Trezor as required by their multi-step signature process.
@@ -461,7 +471,7 @@ instead.
           }
         ]
 
-### block_height
+## block_height
 
 Get the latest block height for this backend. Always in the main branch.
   
@@ -470,7 +480,7 @@ Get the latest block height for this backend. Always in the main branch.
       >>> backend.get_height
       => 376152
 
-### pushtx
+## pushtx
 
 Propagates a raw transaction to the network.
 

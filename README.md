@@ -316,39 +316,39 @@ a number of bitcoin addresses.
 - Position of this deposit in the transaction outputs list.
 - Senders, as a comma-separated list of addresses (no whitespaces)
 
-
-
-      >>> require 'pochette'
-      >>> backend = Pochette::Backends::BlockchainInfo.new
-      >>> addresses = [
-            'mjfa56Keq7PXRKgdPSDB6eWLp4aaAVcj6L', 
-            'mwZE4QfzzriE7nsgHSWbgmtT7s6SDysYvP',
-            'mvrDG7Ts6Mq9ejhZxdsQLjbScycVaktqsg',
-            'mxYzRdJfPk8PcaKSsSzNkX85mMfNcr2CGr',
-            'mzbXim4u1Nq4J2kVggu471pZL3ahxNkmE9',
-            'mhLAgRz5f1YogfYBZCDFSRt3ceeKBPVEKg',
-          ]
-      >>> Pochette.backend.incoming_for(addresses, 1.day.ago) 
-      => [
-          [ 500000, "mjfa56Keq7PXRKgdPSDB6eWLp4aaAVcj6L",
-            "fb401691795a73e0160252c00af18327a15006fcdf877ccca0c116809669032e", 1629, 0,
-            "my2hmDuD9XjmtQWFu9HyyNAsE5WGSDBKpQ"],
-          [100000, "mxYzRdJfPk8PcaKSsSzNkX85mMfNcr2CGr",
-            "250978b77fe1310d6c72239d9e9589d7ac3dc6edf1b2412806ace5104553da34", 1648, 1,
-            "mv9ES7SmQQQ8dpMravBKsLWukgxU2DXfFs"],
-          [500000, "mvrDG7Ts6Mq9ejhZxdsQLjbScycVaktqsg",
-            "d9afd460b0a5e065fdd87bf97cb1843a29ea588c59daabd1609794e8166bb75f", 1648, 0,
-            "my2hmDuD9XjmtQWFu9HyyNAsE5WGSDBKpQ"],
-          [ 100000, "mxYzRdJfPk8PcaKSsSzNkX85mMfNcr2CGr",
-            "5bd72a4aa7818f47ac8943e3e17519be00c46530760860e608d898d728b9d46e", 553, 1,
-            "mvUhgW1ZcUju181bvwEhmZu2x2sRdbV4y2"],
-          [ 500000, "mwZE4QfzzriE7nsgHSWbgmtT7s6SDysYvP",
-            "b252037526ecb616ab5901552abb903f00bf73400a1fc49b5b5bd699b84bce77", 1632, 0,
-            "my2hmDuD9XjmtQWFu9HyyNAsE5WGSDBKpQ"],
-          [ 500000, "mzbXim4u1Nq4J2kVggu471pZL3ahxNkmE9",
-            "ff768084764a05d1de72628432c0a4419538b2786089ec8ad009f6096bc69fe1", 1660, 0,
-            "my2hmDuD9XjmtQWFu9HyyNAsE5WGSDBKpQ"]
-         ]
+```ruby
+>>> require 'pochette'
+>>> backend = Pochette::Backends::BlockchainInfo.new
+>>> addresses = [
+      'mjfa56Keq7PXRKgdPSDB6eWLp4aaAVcj6L', 
+      'mwZE4QfzzriE7nsgHSWbgmtT7s6SDysYvP',
+      'mvrDG7Ts6Mq9ejhZxdsQLjbScycVaktqsg',
+      'mxYzRdJfPk8PcaKSsSzNkX85mMfNcr2CGr',
+      'mzbXim4u1Nq4J2kVggu471pZL3ahxNkmE9',
+      'mhLAgRz5f1YogfYBZCDFSRt3ceeKBPVEKg',
+    ]
+>>> Pochette.backend.incoming_for(addresses, 1.day.ago) 
+=> [
+    [ 500000, "mjfa56Keq7PXRKgdPSDB6eWLp4aaAVcj6L",
+      "fb401691795a73e0160252c00af18327a15006fcdf877ccca0c116809669032e", 1629, 0,
+      "my2hmDuD9XjmtQWFu9HyyNAsE5WGSDBKpQ"],
+    [100000, "mxYzRdJfPk8PcaKSsSzNkX85mMfNcr2CGr",
+      "250978b77fe1310d6c72239d9e9589d7ac3dc6edf1b2412806ace5104553da34", 1648, 1,
+      "mv9ES7SmQQQ8dpMravBKsLWukgxU2DXfFs"],
+    [500000, "mvrDG7Ts6Mq9ejhZxdsQLjbScycVaktqsg",
+      "d9afd460b0a5e065fdd87bf97cb1843a29ea588c59daabd1609794e8166bb75f", 1648, 0,
+      "my2hmDuD9XjmtQWFu9HyyNAsE5WGSDBKpQ"],
+    [ 100000, "mxYzRdJfPk8PcaKSsSzNkX85mMfNcr2CGr",
+      "5bd72a4aa7818f47ac8943e3e17519be00c46530760860e608d898d728b9d46e", 553, 1,
+      "mvUhgW1ZcUju181bvwEhmZu2x2sRdbV4y2"],
+    [ 500000, "mwZE4QfzzriE7nsgHSWbgmtT7s6SDysYvP",
+      "b252037526ecb616ab5901552abb903f00bf73400a1fc49b5b5bd699b84bce77", 1632, 0,
+      "my2hmDuD9XjmtQWFu9HyyNAsE5WGSDBKpQ"],
+    [ 500000, "mzbXim4u1Nq4J2kVggu471pZL3ahxNkmE9",
+      "ff768084764a05d1de72628432c0a4419538b2786089ec8ad009f6096bc69fe1", 1660, 0,
+      "my2hmDuD9XjmtQWFu9HyyNAsE5WGSDBKpQ"]
+   ]
+```
 
 ## balances_for(addresses, confirmations)
 

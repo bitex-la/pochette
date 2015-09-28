@@ -426,19 +426,20 @@ amount seen on the network for a given address, and the final confirmed amount a
       'mhLAgRz5f1YogfYBZCDFSRt3ceeKBPVEKg',
     ]
 >>> backend.balances_for(addresses, 6) 
->>> [
-"mhLAgRz5f1YogfYBZCDFSRt3ceeKBPVEKg" =>
-  [0.00544426, 0.00544426, 0.0, 0.00544426, 0.00544426, 0.0],
-"mjfa56Keq7PXRKgdPSDB6eWLp4aaAVcj6L" =>
-  [0.005, 0.0, 0.005, 0.006, 0.0, 0.006],
-"mvrDG7Ts6Mq9ejhZxdsQLjbScycVaktqsg" =>
-  [0.005, 0.0, 0.005, 0.005, 0.0, 0.005],
-"mwZE4QfzzriE7nsgHSWbgmtT7s6SDysYvP" =>
-  [0.005, 0.0, 0.005, 0.005, 0.0, 0.005],
-"mxYzRdJfPk8PcaKSsSzNkX85mMfNcr2CGr" =>
-  [0.002, 0.0, 0.002, 0.002, 0.0, 0.002],
-"mzbXim4u1Nq4J2kVggu471pZL3ahxNkmE9" =>
-  [0.005, 0.0, 0.005, 0.005, 0.0, 0.005],
+=> {
+    "mhLAgRz5f1YogfYBZCDFSRt3ceeKBPVEKg" =>
+      [0.00544426, 0.00544426, 0.0, 0.00544426, 0.00544426, 0.0],
+    "mjfa56Keq7PXRKgdPSDB6eWLp4aaAVcj6L" =>
+      [0.005, 0.0, 0.005, 0.006, 0.0, 0.006],
+    "mvrDG7Ts6Mq9ejhZxdsQLjbScycVaktqsg" =>
+      [0.005, 0.0, 0.005, 0.005, 0.0, 0.005],
+    "mwZE4QfzzriE7nsgHSWbgmtT7s6SDysYvP" =>
+      [0.005, 0.0, 0.005, 0.005, 0.0, 0.005],
+    "mxYzRdJfPk8PcaKSsSzNkX85mMfNcr2CGr" =>
+      [0.002, 0.0, 0.002, 0.002, 0.0, 0.002],
+    "mzbXim4u1Nq4J2kVggu471pZL3ahxNkmE9" =>
+      [0.005, 0.0, 0.005, 0.005, 0.0, 0.005],
+   }
 ```
 
 ## list_unspent(addresses)

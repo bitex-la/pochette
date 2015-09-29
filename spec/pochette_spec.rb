@@ -6,21 +6,22 @@ describe Pochette do
   end
 
   it 'can set backend at the instance, class or global level.' do
+    args = {addresses: ['a','b']}
     Pochette.backend.should be_nil
     Pochette::TransactionBuilder.backend.should be_nil
-    Pochette::TransactionBuilder.new({}).backend.should be_nil
+    Pochette::TransactionBuilder.new(args).backend.should be_nil
     Pochette::TrezorTransactionBuilder.backend.should be_nil
-    Pochette::TrezorTransactionBuilder.new({}).backend.should be_nil
+    Pochette::TrezorTransactionBuilder.new(args).backend.should be_nil
     Pochette.backend = 1
     Pochette::TransactionBuilder.backend.should == 1
     Pochette::TransactionBuilder.backend = 2
-    Pochette::TransactionBuilder.new({}).backend.should == 2
-    foo = Pochette::TransactionBuilder.new(backend: 3)
+    Pochette::TransactionBuilder.new(args).backend.should == 2
+    foo = Pochette::TransactionBuilder.new(addresses: ['a','b'], backend: 3)
     foo.backend.should == 3
     Pochette::TrezorTransactionBuilder.backend.should == 2
     Pochette::TrezorTransactionBuilder.backend = 4
-    Pochette::TrezorTransactionBuilder.new({}).backend.should == 4
-    bar = Pochette::TrezorTransactionBuilder.new({})
+    Pochette::TrezorTransactionBuilder.new(args).backend.should == 4
+    bar = Pochette::TrezorTransactionBuilder.new(args)
     bar.backend = 5
     Pochette.backend.should == 1
     Pochette::TransactionBuilder.backend.should == 2

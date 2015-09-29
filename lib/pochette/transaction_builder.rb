@@ -5,6 +5,8 @@
 # you can query the results via to_hash.
 
 class Pochette::TransactionBuilder
+  include Contracts::Core
+
   # Backend can be set globally, or independently for each class and instance.
   class_attribute :backend
   def self.backend
@@ -17,10 +19,17 @@ class Pochette::TransactionBuilder
   cattr_accessor(:network_minimum_fee){ 10000 }
   cattr_accessor(:default_fee_per_kb){ 10000 }
 
+  Contract ({
+    :addresses => C::ArrayOf[String],
+    :outputs => C::Maybe[C::ArrayOf[[String, C::Num]]],
+    :utxo_blacklist => C::Maybe[C::ArrayOf[[String, Integer]]],
+    :change_address => C::Maybe[String],
+    :fee_per_kb => C::Maybe[C::Num],
+    :spend_all => C::Maybe[C::Bool],
+  }) => C::Any
   def initialize(options)
     self.backend = options[:backend] if options[:backend]
     initialize_options(options)
-    return unless valid?
     initialize_fee
     initialize_outputs
     return unless valid?
@@ -29,6 +38,14 @@ class Pochette::TransactionBuilder
     validate_final_amounts
   end
 
+  Contract C::None => C::Maybe[({
+    :input_total => C::Num,
+    :output_total => C::Num,
+    :fee => C::Num,
+    :outputs => C::ArrayOf[[String, C::Num]],
+    :inputs => C::ArrayOf[[String, String, Integer, C::Num]],
+    :utxos_to_blacklist => C::ArrayOf[[String, Integer]]
+  })]
   def as_hash
     return nil unless valid?
     { input_total: inputs_amount,
@@ -58,9 +75,6 @@ protected
     self.options = options
     self.errors ||= []
     self.addresses = options[:addresses]
-    if addresses.nil? || addresses.empty?
-      return errors << :no_addresses_given
-    end
   end
 
   def initialize_fee

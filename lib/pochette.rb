@@ -3,17 +3,26 @@ require "bitcoin_rpc"
 require "active_support"
 require "active_support/core_ext"
 require "bitcoin"
+require "contracts"
+C = Contracts
 
 module Pochette
+  include Contracts::Core
+
   mattr_accessor :backend
   
+  Contract C::Bool => C::Bool
   def self.testnet=(v)
-    @testnet = v
     Bitcoin.network = v ? :testnet : :bitcoin
+    @testnet = v
   end
+
+  Contract C::None => C::Bool
   def self.testnet
-    @testnet
+    @testnet || false
   end
+
+  Contract C::None => C::Bool
   def self.testnet?
     self.testnet
   end

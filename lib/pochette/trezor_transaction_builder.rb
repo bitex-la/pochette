@@ -1,37 +1,16 @@
 # Same as TransactionBuilder but outputs a transaction hash with all the
 # required data to create and sign a transaction using a BitcoinTrezor.
-# * Uses BIP32 addresses instead of regular strings.
-#   Each address is represented as a pair, with the public address string
-#   and the BIP32 path as a list of integers, for example:
-#   ['public-address-as-string', [44, 1, 3, 11]]
-#
-# * Includes associated transaction data for each input being spent,
-#   ready to be consumed by your Trezor device.
-#
-# * Outputs are represented as JSON with script_type as expected by Trezor.
-#   { script_type: 'PAYTOADDRESS',
-#     address: '1address-as-string',
-#     amount: amount_in_satoshis }
-#
-# Options:
-#   bip32_addresses:
-#     List of [address, path] pairs in wallet.
-#     We will be spending their unspent outputs.
-#   outputs:
-#     List of pairs [recipient_address, amount]
-#     This will not be all the final outputs in the transaction,
-#     as a 'change' output may be added if needed.
-#   utxo_blacklist:
-#     List of utxos to ignore, a list of pairs [transaction hash, position]
-#   change_address:
-#     Change address to use. Will default to the first source address.
-#   fee_per_kb:
-#     Defaults to 10000 satoshis.
-#   spend_all:
-#     Wether to spend all available utxos or just select enough to
-#     cover the given outputs.
 
 class Pochette::TrezorTransactionBuilder < Pochette::TransactionBuilder
+
+  Contract ({
+    :bip32_addresses => C::ArrayOf[[String, C::ArrayOf[Integer]]],
+    :outputs => C::Maybe[C::ArrayOf[[String, C::Num]]],
+    :utxo_blacklist => C::Maybe[C::ArrayOf[[String, Integer]]],
+    :change_address => C::Maybe[String],
+    :fee_per_kb => C::Maybe[C::Num],
+    :spend_all => C::Maybe[C::Bool],
+  }) => C::Any
   def initialize(options)
     options = options.dup
     initialize_bip32_addresses(options)
@@ -42,6 +21,25 @@ class Pochette::TrezorTransactionBuilder < Pochette::TransactionBuilder
     build_transactions
   end
 
+  Contract C::None => C::Maybe[({
+    :input_total => C::Num,
+    :output_total => C::Num,
+    :fee => C::Num,
+    :outputs => C::ArrayOf[[String, C::Num]],
+    :inputs => C::ArrayOf[[String, String, Integer, C::Num]],
+    :utxos_to_blacklist => C::ArrayOf[[String, Integer]],
+    :transactions => C::ArrayOf[Hash],
+    :trezor_inputs => C::ArrayOf[{
+      address_n: C::ArrayOf[Integer],
+      prev_hash: String,
+      prev_index: Integer
+    }],
+    :trezor_outputs => C::ArrayOf[{
+      script_type: String,
+      address: String,
+      amount: C::Num
+    }]
+  })]
   def as_hash
     return nil unless valid?
     super.merge(

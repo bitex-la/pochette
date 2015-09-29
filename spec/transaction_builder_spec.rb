@@ -189,10 +189,9 @@ describe Pochette::TransactionBuilder do
   end
 
   it 'fails if no addresses are given' do
-    transaction = Pochette::TransactionBuilder.new({})
-    transaction.should_not be_valid
-    transaction.errors.should == [:no_addresses_given]
-    transaction.as_hash.should be_nil
+    expect do
+      Pochette::TransactionBuilder.new({})
+    end.to raise_exception ParamContractError
   end
 
   it 'fails if minimum output size is not met' do

@@ -93,7 +93,7 @@ The TransactionBuilder's initializer receives a single options hash with:
 <dd>
   List of pairs [recipient_address, amount]
   This will not be all the final outputs in the transaction,
-  as a 'change' output may be adted if needed.
+  as a 'change' output may be added if needed.
 </dd>
 <dt>utxo_blacklist:</dt>
 <dd>

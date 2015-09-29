@@ -7,11 +7,13 @@ describe Pochette do
 
   it 'can set backend at the instance, class or global level.' do
     args = {addresses: ['a','b']}
+    bip32args = {bip32_addresses: [['a',[1,1]]] }
     Pochette.backend.should be_nil
     Pochette::TransactionBuilder.backend.should be_nil
     Pochette::TransactionBuilder.new(args).backend.should be_nil
     Pochette::TrezorTransactionBuilder.backend.should be_nil
-    Pochette::TrezorTransactionBuilder.new(args).backend.should be_nil
+    Pochette::TrezorTransactionBuilder
+      .new(bip32args).backend.should be_nil
     Pochette.backend = 1
     Pochette::TransactionBuilder.backend.should == 1
     Pochette::TransactionBuilder.backend = 2
@@ -20,8 +22,9 @@ describe Pochette do
     foo.backend.should == 3
     Pochette::TrezorTransactionBuilder.backend.should == 2
     Pochette::TrezorTransactionBuilder.backend = 4
-    Pochette::TrezorTransactionBuilder.new(args).backend.should == 4
-    bar = Pochette::TrezorTransactionBuilder.new(args)
+    Pochette::TrezorTransactionBuilder
+      .new(bip32args).backend.should == 4
+    bar = Pochette::TrezorTransactionBuilder.new(bip32args)
     bar.backend = 5
     Pochette.backend.should == 1
     Pochette::TransactionBuilder.backend.should == 2

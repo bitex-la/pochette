@@ -89,7 +89,8 @@ class Pochette::Backends::BlockchainInfo
     uri = URI.parse("https://blockchain.info/pushtx")
     params = { "tx" => hex }
     params['api_code'] = api_key if api_key
-    Net::HTTP.post_form(uri, params)
+    response = Net::HTTP.post_form(uri, params)
+    raise StandardError.new(response) if response.code.to_i != 200
     Bitcoin::Protocol::Tx.new(hex.htb).hash
   end
 

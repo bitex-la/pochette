@@ -82,6 +82,6 @@ protected
 
   def build_transactions
     txids = inputs.collect{|i| i[1] }
-    self.transactions = Pochette.backend.list_transactions(txids)
+    self.transactions = backend.list_transactions(txids)
   end
 end

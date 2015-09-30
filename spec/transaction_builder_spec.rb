@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Pochette::TransactionBuilder do
   before(:each) do
-    Pochette.backend = double(
+    Pochette::TransactionBuilder.backend = double(
       list_unspent: list_unspent_mock,
       list_transactions: list_transactions_mock
     )

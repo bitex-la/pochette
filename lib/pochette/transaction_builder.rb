@@ -112,7 +112,7 @@ protected
 
   def select_utxos
     utxo_blacklist = options[:utxo_blacklist] || []
-    all_utxos = Pochette.backend.list_unspent(addresses)
+    all_utxos = backend.list_unspent(addresses)
     available_utxos = all_utxos.reject do |utxo|
       utxo_blacklist.include?([utxo[1], utxo[2]])
     end

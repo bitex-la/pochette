@@ -80,12 +80,9 @@ protected
 
   # Chooses a backend to use, gives a small advantage to incumbent backend.
   def backend
-    if @backend.nil?
-      @last_choice_on = Time.now
-      return @backend = @backends.sort_by(&:block_height).last
-    end
+    return @backend if @backend && @last_choice_on > 10.minutes.ago
 
-    return @backend if @last_choice_on > 10.minutes.ago
+    @backend ||= @backends.first
 
     @last_choice_on = Time.now
     challenger, height = @backends

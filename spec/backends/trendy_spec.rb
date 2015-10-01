@@ -2,12 +2,21 @@ require 'spec_helper'
 
 describe Pochette::Backends::Trendy do
   let(:one){ double(block_height: 1) }
-  let(:two){ double(block_height: 2) }
+  let(:two){ double(block_height: 3) }
   let(:trendy){ Pochette::Backends::Trendy.new([one, two]) }
 
   it 'chooses the backend which is most up to date' do
     two.should_receive(:incoming_for)
     trendy.incoming_for(['address'], 1.day.ago)
+  end
+
+  it 'initially treats first backend as incumbent' do
+    one = double(block_height: 1)
+    two = double(block_height: 1)
+    Pochette::Backends::Trendy.new([one,two])
+      .instance_eval{ backend }.should == one
+    Pochette::Backends::Trendy.new([two,one])
+      .instance_eval{ backend }.should == two
   end
 
   it 'caches selection for 10 minutes' do

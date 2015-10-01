@@ -62,5 +62,15 @@ describe Pochette::Backends::Trendy do
     two.should_receive(:list_transactions)
     trendy.list_transactions(['foo'])
   end
+
+  it 'delegates pushtx' do
+    two.should_receive(:pushtx)
+    trendy.pushtx('rawhex')
+  end
+
+  it 'delegates block_height' do
+    two.should_receive(:block_height)
+    trendy.block_height
+  end
 end
 

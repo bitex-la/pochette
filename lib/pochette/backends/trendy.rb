@@ -76,6 +76,14 @@ class Pochette::Backends::Trendy
     backend.list_transactions(txids)
   end
 
+  def pushtx(hex)
+    backend.pushtx(hex)
+  end
+
+  def block_height
+    backend.block_height
+  end
+
 protected
 
   # Chooses a backend to use, gives a small advantage to incumbent backend.

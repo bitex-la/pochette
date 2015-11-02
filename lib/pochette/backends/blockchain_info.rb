@@ -15,7 +15,7 @@ class Pochette::Backends::BlockchainInfo
     json = get_json("unspent", {active: addresses.join('|'), format: 'json'})
     json['unspent_outputs'].collect do |utxo|
       address = Bitcoin::Script.new(utxo['script'].htb).get_address
-      [address, utxo['tx_hash_big_endian'], utxo['tx_output_n'].to_i, utxo['value']]
+      [address, utxo['tx_hash_big_endian'], utxo['tx_output_n'].to_i, utxo['value'], utxo['script']]
     end
   end
   

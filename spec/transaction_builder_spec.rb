@@ -24,7 +24,7 @@ describe Pochette::TransactionBuilder do
       ],
       inputs: [["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
         "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
-        1, 200000000]
+        1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
       ],
       utxos_to_blacklist: [
         ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
@@ -48,10 +48,10 @@ describe Pochette::TransactionBuilder do
       inputs: [
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
-          1, 200000000],
+          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72",
-          1, 200000000]
+          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
       ],
       utxos_to_blacklist: [
         ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
@@ -82,13 +82,13 @@ describe Pochette::TransactionBuilder do
       inputs: [
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
-          1, 200000000],
+          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72",
-          1, 200000000],
+          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
-          1, 200000000]
+          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
       ],
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 100000000],
@@ -114,10 +114,10 @@ describe Pochette::TransactionBuilder do
       inputs: [
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
-          1, 200000000],
+          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72",
-          1, 200000000],
+          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
       ],
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 200000000],
@@ -143,10 +143,10 @@ describe Pochette::TransactionBuilder do
       inputs: [
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
-          1, 2_0000_0000],
+          1, 2_0000_0000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72",
-          1, 2_0000_0000],
+          1, 2_0000_0000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
       ],
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 300000000],
@@ -172,10 +172,10 @@ describe Pochette::TransactionBuilder do
       inputs: [
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
-          1, 200000000],
+          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
-          1, 200000000]
+          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
       ],
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 300000000],
@@ -232,10 +232,10 @@ describe Pochette::TransactionBuilder do
       inputs: [
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
-          1, 200000000],
+          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72",
-          1, 200000000]
+          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
       ],
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 399989600],

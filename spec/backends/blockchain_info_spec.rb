@@ -132,17 +132,23 @@ describe Pochette::Backends::BlockchainInfo do
     stub_api('unspent', ['list_unspent'], {active: addresses.join('|')} )
     backend.list_unspent(addresses).should == [
       ["1EMTe38Dwq9zHXktd6jtfxtGPbxHmFMdwM",
-        "f394d5c739b7780262c9b382605538ae1189ba0133251891f76c6ab7084621df", 0, 300000000],
+        "f394d5c739b7780262c9b382605538ae1189ba0133251891f76c6ab7084621df", 0, 300000000,
+        "76a914927830f0fb997fffb91ca7fd341bf96bb2e5743b88ac"],
       ["1EMTe38Dwq9zHXktd6jtfxtGPbxHmFMdwM",
-        "c78142666e2f3376aa2cb9614a847be9e3daa6eeba25105f71445b58375a4c37", 0, 200000000],
+        "c78142666e2f3376aa2cb9614a847be9e3daa6eeba25105f71445b58375a4c37", 0, 200000000,
+        "76a914927830f0fb997fffb91ca7fd341bf96bb2e5743b88ac"],
       ["1EMTe38Dwq9zHXktd6jtfxtGPbxHmFMdwM",
-        "d529b9ffd6d5dcd0c431fddd05849846935de3bb89d67831d971b2f2584cdde8", 0, 164486111],
+        "d529b9ffd6d5dcd0c431fddd05849846935de3bb89d67831d971b2f2584cdde8", 0, 164486111,
+        "76a914927830f0fb997fffb91ca7fd341bf96bb2e5743b88ac"],
       ["1EMTe38Dwq9zHXktd6jtfxtGPbxHmFMdwM",
-        "e19798db667374abab2daf6028249cfb020c78c7e8a46e5a2a93eb53d48f6ff6", 0, 335513889],
+        "e19798db667374abab2daf6028249cfb020c78c7e8a46e5a2a93eb53d48f6ff6", 0, 335513889,
+        "76a914927830f0fb997fffb91ca7fd341bf96bb2e5743b88ac"],
       ["1EMTe38Dwq9zHXktd6jtfxtGPbxHmFMdwM",
-        "f90ec5a88df5933c3b3295a0ff515085e4ed0661b4049d8a51d2ef0031e96266", 0, 225000000],
+        "f90ec5a88df5933c3b3295a0ff515085e4ed0661b4049d8a51d2ef0031e96266", 0, 225000000,
+        "76a914927830f0fb997fffb91ca7fd341bf96bb2e5743b88ac"],
       ["13yNA2RMSxVDga6AmixwumacqCxbjcmnwi",
-        "199e70bfc46d52bb452b144061c26cc9ff74dd9befae869e1df8d25e00e89861", 0, 2699995900]
+        "199e70bfc46d52bb452b144061c26cc9ff74dd9befae869e1df8d25e00e89861", 0, 2699995900,
+        "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
     ]
   end
   

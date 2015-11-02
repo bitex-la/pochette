@@ -91,19 +91,26 @@ describe Pochette::Backends::BitcoinCore do
     stub_rpc('listunspent', [1, 99999999, addresses], 'list_unspent_listunspent')
     backend.list_unspent(addresses).should == [
       ["mjfa56Keq7PXRKgdPSDB6eWLp4aaAVcj6L",
-      "fb401691795a73e0160252c00af18327a15006fcdf877ccca0c116809669032e", 0, 500000],
+      "fb401691795a73e0160252c00af18327a15006fcdf877ccca0c116809669032e", 0, 500000,
+      "76a9142d81b210deb7e22475cd7f2fda0bf582dddc9da788ac"],
       ["mxYzRdJfPk8PcaKSsSzNkX85mMfNcr2CGr",
-      "250978b77fe1310d6c72239d9e9589d7ac3dc6edf1b2412806ace5104553da34", 1, 100000],
+      "250978b77fe1310d6c72239d9e9589d7ac3dc6edf1b2412806ace5104553da34", 1, 100000, 
+      "76a914badcbfae4d83a52dc2c8f68605663adc9d4922a688ac"],
       ["mvrDG7Ts6Mq9ejhZxdsQLjbScycVaktqsg",
-      "d9afd460b0a5e065fdd87bf97cb1843a29ea588c59daabd1609794e8166bb75f", 0, 500000],
+      "d9afd460b0a5e065fdd87bf97cb1843a29ea588c59daabd1609794e8166bb75f", 0, 500000,
+      "76a914a82e489066cc8172d1afaa84b96fa9613cd0955688ac"],
       ["mxYzRdJfPk8PcaKSsSzNkX85mMfNcr2CGr",
-      "5bd72a4aa7818f47ac8943e3e17519be00c46530760860e608d898d728b9d46e", 1, 100000],
+      "5bd72a4aa7818f47ac8943e3e17519be00c46530760860e608d898d728b9d46e", 1, 100000,
+      "76a914badcbfae4d83a52dc2c8f68605663adc9d4922a688ac"],
       ["mwZE4QfzzriE7nsgHSWbgmtT7s6SDysYvP",
-      "b252037526ecb616ab5901552abb903f00bf73400a1fc49b5b5bd699b84bce77", 0, 500000],
+      "b252037526ecb616ab5901552abb903f00bf73400a1fc49b5b5bd699b84bce77", 0, 500000,
+      "76a914aff00113ae336461aa1613eac95c3279b533279388ac"],
       ["mjfa56Keq7PXRKgdPSDB6eWLp4aaAVcj6L",
-      "9142d7a8e96124a36db9708dd21afa4ac81f15a77bd85c06f16e808a4d700da2", 1, 100000],
+      "9142d7a8e96124a36db9708dd21afa4ac81f15a77bd85c06f16e808a4d700da2", 1, 100000,
+      "76a9142d81b210deb7e22475cd7f2fda0bf582dddc9da788ac"],
       ["mzbXim4u1Nq4J2kVggu471pZL3ahxNkmE9",
-      "ff768084764a05d1de72628432c0a4419538b2786089ec8ad009f6096bc69fe1", 0, 500000]
+      "ff768084764a05d1de72628432c0a4419538b2786089ec8ad009f6096bc69fe1", 0, 500000,
+      "76a914d147f4d2921056aa6d8c6a57f8aad4d68523959e88ac"]
     ]
   end
   

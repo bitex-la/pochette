@@ -74,7 +74,7 @@ class Pochette::Backends::BitcoinCore
   def list_unspent(addresses)
     return nil if addresses.empty?
     client.listunspent(1, 99999999, addresses).collect do |u| 
-      [u[:address], u[:txid], u[:vout], (u[:amount] * 1_0000_0000).to_i]
+      [u[:address], u[:txid], u[:vout], (u[:amount] * 1_0000_0000).to_i, u[:scriptPubKey]]
     end
   end
 

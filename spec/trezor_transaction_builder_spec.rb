@@ -34,9 +34,11 @@ describe Pochette::TrezorTransactionBuilder do
       ],
       inputs: [
         ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
-          "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1, 200000000],
+          "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1, 200000000,
+          "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
         ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
-          "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1, 200000000]
+          "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1, 200000000,
+          "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
       ],
       trezor_inputs: [
         { address_n: [42,1,1],

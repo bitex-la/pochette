@@ -128,7 +128,7 @@ A hash with
 <dt>outputs:</dt>
 <dd>Array of [destination address, amount in satoshis]</dd>
 <dt>inputs:</dt>
-<dd>Array of [input address, utxo transaction hash, utxo position, amount]</dd>
+<dd>Array of [input address, utxo transaction hash, utxo position, amount, scriptPubKey]</dd>
 <dt>utxos_to_blacklist:</dt>
 <dd>
   Transaction inputs formatted to be used as utxo_blacklist on another
@@ -168,7 +168,8 @@ A hash with
       [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
         "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
         1,
-        200000000
+        200000000,
+        'public_key_in_hex_format'
       ],
     ],
     utxos_to_blacklist: [
@@ -299,7 +300,8 @@ A hash with
       [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
         "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
         1,
-        200000000
+        200000000,
+        "script_pubkey"
       ],
     ],
     trezor_inputs: [
@@ -472,19 +474,19 @@ Pochette::TransactionBuilder which is smart about selecting utxos.
     ]
 >>> backend.list_unspent(addresses).should == [
   ["mjfa56Keq7PXRKgdPSDB6eWLp4aaAVcj6L",
-  "fb401691795a73e0160252c00af18327a15006fcdf877ccca0c116809669032e", 0, 500000],
+  "fb401691795a73e0160252c00af18327a15006fcdf877ccca0c116809669032e", 0, 500000, "script_pub_key"],
   ["mxYzRdJfPk8PcaKSsSzNkX85mMfNcr2CGr",
-  "250978b77fe1310d6c72239d9e9589d7ac3dc6edf1b2412806ace5104553da34", 1, 100000],
+  "250978b77fe1310d6c72239d9e9589d7ac3dc6edf1b2412806ace5104553da34", 1, 100000, "script_pub_key"],
   ["mvrDG7Ts6Mq9ejhZxdsQLjbScycVaktqsg",
-  "d9afd460b0a5e065fdd87bf97cb1843a29ea588c59daabd1609794e8166bb75f", 0, 500000],
+  "d9afd460b0a5e065fdd87bf97cb1843a29ea588c59daabd1609794e8166bb75f", 0, 500000, "script_pub_key"],
   ["mxYzRdJfPk8PcaKSsSzNkX85mMfNcr2CGr",
-  "5bd72a4aa7818f47ac8943e3e17519be00c46530760860e608d898d728b9d46e", 1, 100000],
+  "5bd72a4aa7818f47ac8943e3e17519be00c46530760860e608d898d728b9d46e", 1, 100000, "script_pub_key"],
   ["mwZE4QfzzriE7nsgHSWbgmtT7s6SDysYvP",
-  "b252037526ecb616ab5901552abb903f00bf73400a1fc49b5b5bd699b84bce77", 0, 500000],
+  "b252037526ecb616ab5901552abb903f00bf73400a1fc49b5b5bd699b84bce77", 0, 500000, "script_pub_key"],
   ["mjfa56Keq7PXRKgdPSDB6eWLp4aaAVcj6L",
-  "9142d7a8e96124a36db9708dd21afa4ac81f15a77bd85c06f16e808a4d700da2", 1, 100000],
+  "9142d7a8e96124a36db9708dd21afa4ac81f15a77bd85c06f16e808a4d700da2", 1, 100000, "script_pub_key"],
   ["mzbXim4u1Nq4J2kVggu471pZL3ahxNkmE9",
-  "ff768084764a05d1de72628432c0a4419538b2786089ec8ad009f6096bc69fe1", 0, 500000]
+  "ff768084764a05d1de72628432c0a4419538b2786089ec8ad009f6096bc69fe1", 0, 500000, "script_pub_key"]
 ]
 ```
 

@@ -26,7 +26,7 @@ class Pochette::TrezorTransactionBuilder < Pochette::TransactionBuilder
     :output_total => C::Num,
     :fee => C::Num,
     :outputs => C::ArrayOf[[String, C::Num]],
-    :inputs => C::ArrayOf[[String, String, Integer, C::Num]],
+    :inputs => C::ArrayOf[[String, String, Integer, C::Num, String]],
     :utxos_to_blacklist => C::ArrayOf[[String, Integer]],
     :transactions => C::ArrayOf[Hash],
     :trezor_inputs => C::ArrayOf[{

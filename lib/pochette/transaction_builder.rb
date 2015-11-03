@@ -14,10 +14,10 @@ class Pochette::TransactionBuilder
   end
 
   cattr_accessor(:dust_size){ 546 }
-  cattr_accessor(:output_size){ 149 }
-  cattr_accessor(:input_size){ 35 }
+  cattr_accessor(:output_size){ 35 }
+  cattr_accessor(:input_size){ 149 }
   cattr_accessor(:network_minimum_fee){ 10000 }
-  cattr_accessor(:default_fee_per_kb){ 10000 }
+  cattr_accessor(:default_fee_per_kb){ 12000 }
 
   Contract ({
     :addresses => C::ArrayOf[String],

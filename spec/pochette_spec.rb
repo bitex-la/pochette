@@ -38,7 +38,7 @@ describe Pochette do
     Bitcoin.network_name.should == :bitcoin
     Pochette.testnet = true
     Pochette.testnet.should be_truthy
-    Bitcoin.network_name.should == :testnet
+    Bitcoin.network_name.should == :testnet3
     Pochette.should be_testnet
     Pochette.testnet = false
     Bitcoin.network_name.should == :bitcoin

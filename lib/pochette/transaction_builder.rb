@@ -3,7 +3,6 @@
 # Instantiating will perform all the given queries, you'll be left with a
 # TransactionBuilder object that is either valid? or not, and if valid
 # you can query the results via to_hash.
-
 class Pochette::TransactionBuilder
   include Contracts::Core
 

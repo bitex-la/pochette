@@ -1,10 +1,14 @@
 # Same as TransactionBuilder but outputs a transaction hash with all the
 # required data to create and sign a transaction using a BitcoinTrezor.
+require 'byebug'
 
 class Pochette::TrezorTransactionBuilder < Pochette::TransactionBuilder
 
   Contract ({
-    :bip32_addresses => C::ArrayOf[[String, C::ArrayOf[Integer]]],
+    :bip32_addresses => C::ArrayOf[C::Or[
+      [C::Or[String, C::ArrayOf[String]], C::ArrayOf[Integer]],
+      [C::Or[String, C::ArrayOf[String]], C::ArrayOf[Integer], C::Maybe[Integer]]
+    ]],
     :outputs => C::Maybe[C::ArrayOf[[String, C::Num]]],
     :utxo_blacklist => C::Maybe[C::ArrayOf[[String, Integer]]],
     :change_address => C::Maybe[String],
@@ -32,7 +36,9 @@ class Pochette::TrezorTransactionBuilder < Pochette::TransactionBuilder
     :trezor_inputs => C::ArrayOf[{
       address_n: C::ArrayOf[Integer],
       prev_hash: String,
-      prev_index: Integer
+      prev_index: Integer,
+      script_type: C::Maybe[C::Any],
+      multisig: C::Maybe[C::Any],
     }],
     :trezor_outputs => C::ArrayOf[{
       script_type: String,
@@ -59,17 +65,55 @@ protected
       self.errors = [:no_bip32_addresses_given]
       return
     end
-    options[:addresses] = options[:bip32_addresses].collect(&:first)
+    options[:addresses] = options[:bip32_addresses].collect{|a| address_from_bip32(a) }
     self.bip32_address_lookup = options[:bip32_addresses].reduce({}) do |accum, addr|
-      accum[addr.first] = addr.last
+      accum[address_from_bip32(addr)] = addr
       accum
+    end
+  end
+
+  # Bip32 addresses may look like an address with a bip32 path, or
+  # an array of xpubs, bip32 path and M (as in M of N) for multisig p2sh addresses.
+  def address_from_bip32(array)
+    if array.first.is_a?(String)
+      array.first
+    else
+      public_keys = array.first.collect do |x|
+        MoneyTree::Node.from_bip32(x).node_for_path(array[1].join('/')).public_key.key
+      end
+      address, _ = Bitcoin.pubkeys_to_p2sh_multisig_address(array.last, *public_keys)
+      address
     end
   end
 
   def build_trezor_inputs
     self.trezor_inputs = inputs.collect do |input|
-      { address_n: bip32_address_lookup[input[0]],
+      address = bip32_address_lookup[input[0]]
+      hash = { address_n: address[1],
         prev_hash: input[1], prev_index: input[2] }
+      if address.size == 3
+        xpubs = address.first
+        m = address.last
+        hash[:script_type] = 'SPENDMULTISIG'
+        hash[:multisig] = {
+          signatures: [''] * xpubs.size,
+          m: m,
+          pubkeys: xpubs.collect do |xpub|
+            node = MoneyTree::Node.from_bip32(xpub)
+            { address_n: address[1],
+              node: {
+                chain_code: node.chain_code.to_s(16),
+                depth: 0, 
+                child_num: 0, 
+                fingerprint: 0,
+                path: [],
+                public_key: node.public_key.key,
+              }
+            }
+          end
+        }
+      end
+      hash
     end
   end
 

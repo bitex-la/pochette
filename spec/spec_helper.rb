@@ -64,5 +64,27 @@ module BackendMocks
       }
     ]
   end
+
+  def list_unspent_multisig_mock
+    [
+      ["2MtpP1aLi2bjFBPhPN7suFZwjgb2k2tBmCp", "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee",
+        0, 1_0000_0000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
+    ]
+  end
+
+  def list_transactions_multisig_mock
+    [
+      { "hash": "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee",
+        "version": "1", "lock_time": "0",
+        "inputs": [
+          { "prev_hash": "158d6bbe586b4e00347f992e8296532d69f902d0ead32d964b6c87d4f8f0d3ea",
+            "prev_index": 0, "sequence": "\\xffffffff", "script_sig": "SCRIPTSCRIPTSCRIPT" }
+        ],
+        "bin_outputs": [
+          { "amount": 1_0000_0000, "script_pubkey": "5c7837366139..." },
+        ]
+      }
+    ]
+  end
 end
 RSpec.configuration.include BackendMocks

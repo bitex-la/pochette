@@ -20,7 +20,8 @@ and broadcasted.
 
 The Pochette::TrezorTransactionBuilder class extends Pochette::TransactionBuilder
 including transactions, inputs and outputs that are formatted in a way they can
-be passed directly to a Trezor device for signing.
+be passed directly to a Trezor device for signing. You can even build transactions
+for multisig addresses to be signed by several trezors.
 
 ## Table of contents
 - [Installation and Setup](#installation-and-setup)
@@ -187,15 +188,30 @@ If you're using [Trezor Connect](https://github.com/trezor/connect) for signing
 then you won't need to pass in the transactions.
 
 #### Receives
-The TransactionBuilder's initializer receives a single options hash with:
+The TrezorTransactionBuilder's initializer receives a single options hash with:
 
 <dl>
-<dt>addresses:</dt>
+<dt>bip32_addresses:</dt>
 <dd>
   List of addresses in wallet. We will be spending their unspent outputs.
   Each address is represented as a pair, with the public address string
   and the BIP32 path as a list of integers, for example:
+
   ['public-address-as-string', [44, 1, 3, 11]]
+
+  If you're spending from a multisig address then you should provide
+  all the root xpubs ( session.getPublicKey([]) ) from your different trezor devices, the path as a list of
+  integers and the M number (as in M out of N).
+  The actual bitcoin address will be derived from these. 
+  The following example is for a multi-sig address where 2 out of 3 trezors can sign.
+  The address is generated from the public key at path [42, 1, 1] in each trezor.
+
+  [['xpub661MyMwAqRbcGCmcnz4JtnieVyuvgQFGqZqw3KS1g9khndpF3segkAYbYCKKaQ9Di2ZuWLaZU4Axt7TrKq41aVYx8XTbDbQFzhhDMntKLU5',
+    'xpub661MyMwAqRbcFwc3Nmz8WmMU9okGmeVSmuprwNHCVsfhy6vMyg6g79octqwNftK4g62TMWmb7UtVpnAWnANzqwtKrCDFe2UaDCv1HoErssE'
+    'xpub661MyMwAqRbcGkqPSKVkwTMtFZzEpbWXjM4t1Dv1XQbfMxtyLRGupWkp3fcSCDtp6nd1AUrRtq8tnFGTYgkY1pB9muwzaBDnJSMo2rVENhz'],
+   [42,1,1],
+   2]
+
 </dd>
 <dt>outputs:</dt>
 <dd>
@@ -250,6 +266,53 @@ A hash with
   { address_n: [42,1,1],
     prev_hash: "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
     prev_index: 1}
+
+  When spending from a multisig address, the inputs will also include the multisig structure,
+  with nodes and everything your trezor needs to sign.
+  Notice there's a 'signatures' key inside 'multisig', you should sign the transaction as is,
+  then populate the corresponding value in 'signatures' and keep signing until you have
+  all the required signatures.
+
+  { address_n: [42,1,1],
+    prev_hash: "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee",
+    prev_index: 0,
+    script_type: 'SPENDMULTISIG',
+    multisig: {
+      signatures: ['','',''],
+      m: 2,
+      pubkeys: [
+        { address_n: [42,1,1],
+          node: {
+            chain_code: 'a6d47170817f78094180f1a7a3a9df7634df75fa9604d71b87e92a5a6bf9d30a',
+            depth: 0, 
+            child_num: 0, 
+            fingerprint: 0,
+            path: [],
+            public_key: '03142b0a6fa6943e7276ddc42582c6b169243d289ff17e7c8101797047eed90c9b',
+          }
+        },
+        { address_n: [42,1,1],
+          node: {
+            chain_code: '8c9151740446b9e0063ca934df66c5e14121a0b4d8a360748f1b19bfef675460',
+            depth: 0, 
+            child_num: 0, 
+            fingerprint: 0,
+            path: [],
+            public_key: '027565ceb190647ec5c566805ebc5cb6166ae2ee1d4995495f61b9eff371ec0e61',
+          }
+        },
+        { address_n: [42,1,1],
+          node: {
+            chain_code: 'de5bc5918414df3777ff52ae733bdbc87431485cfd39aea65da6133e183ef68a',
+            depth: 0, 
+            child_num: 0, 
+            fingerprint: 0,
+            path: [],
+            public_key: '028776ff18f0f3808d6d42749a6e2baee5c75c3f7ae07445403a3a5690d580a0af',
+          }
+        }
+      ]
+    }
 </dd>
 <dt>trezor_outputs:</dt>
 <dd>

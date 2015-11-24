@@ -3,6 +3,7 @@ require "bitcoin_rpc"
 require "active_support"
 require "active_support/core_ext"
 require "bitcoin"
+require "money-tree"
 require "contracts"
 C = Contracts
 
@@ -13,7 +14,7 @@ module Pochette
   
   Contract C::Bool => C::Bool
   def self.testnet=(v)
-    Bitcoin.network = v ? :testnet : :bitcoin
+    Bitcoin.network = v ? :testnet3 : :bitcoin
     @testnet = v
   end
 

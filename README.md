@@ -197,7 +197,9 @@ The TrezorTransactionBuilder's initializer receives a single options hash with:
   Each address is represented as a pair, with the public address string
   and the BIP32 path as a list of integers, for example:
 
+```ruby
   ['public-address-as-string', [44, 1, 3, 11]]
+```
 
   If you're spending from a multisig address then you should provide
   all the root xpubs ( session.getPublicKey([]) ) from your different trezor devices, the path as a list of
@@ -206,11 +208,13 @@ The TrezorTransactionBuilder's initializer receives a single options hash with:
   The following example is for a multi-sig address where 2 out of 3 trezors can sign.
   The address is generated from the public key at path [42, 1, 1] in each trezor.
 
+```ruby
   [['xpub661MyMwAqRbcGCmcnz4JtnieVyuvgQFGqZqw3KS1g9khndpF3segkAYbYCKKaQ9Di2ZuWLaZU4Axt7TrKq41aVYx8XTbDbQFzhhDMntKLU5',
     'xpub661MyMwAqRbcFwc3Nmz8WmMU9okGmeVSmuprwNHCVsfhy6vMyg6g79octqwNftK4g62TMWmb7UtVpnAWnANzqwtKrCDFe2UaDCv1HoErssE'
     'xpub661MyMwAqRbcGkqPSKVkwTMtFZzEpbWXjM4t1Dv1XQbfMxtyLRGupWkp3fcSCDtp6nd1AUrRtq8tnFGTYgkY1pB9muwzaBDnJSMo2rVENhz'],
    [42,1,1],
    2]
+```
 
 </dd>
 <dt>outputs:</dt>

@@ -1,7 +1,5 @@
 # Same as TransactionBuilder but outputs a transaction hash with all the
 # required data to create and sign a transaction using a BitcoinTrezor.
-require 'byebug'
-
 class Pochette::TrezorTransactionBuilder < Pochette::TransactionBuilder
 
   Contract ({

@@ -118,7 +118,7 @@ protected
   def build_trezor_outputs
     self.trezor_outputs = outputs.collect do |address, amount|
       type = Bitcoin.address_type(address) == :hash160 ? 'PAYTOADDRESS' : 'PAYTOSCRIPTHASH'
-      { script_type: type, address: address, amount: amount }
+      { script_type: type, address: address, amount: amount.to_i }
     end
   end
 

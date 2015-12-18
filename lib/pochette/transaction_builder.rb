@@ -47,9 +47,9 @@ class Pochette::TransactionBuilder
   })]
   def as_hash
     return nil unless valid?
-    { input_total: inputs_amount,
-      output_total: outputs_amount,
-      fee: inputs_amount - outputs_amount,
+    { input_total: inputs_amount.to_i,
+      output_total: outputs_amount.to_i,
+      fee: (inputs_amount - outputs_amount).to_i,
       inputs: inputs,
       outputs: outputs,
       utxos_to_blacklist: inputs.collect{|i| [i[1], i[2]] },
@@ -137,7 +137,7 @@ protected
       minimum_fee(fee_for_bytes(output_size))
     change_address = options[:change_address] || addresses.first
     if change > dust_size
-      outputs << [change_address, change]
+      outputs << [change_address, change.to_i]
       add_output_fee
     end
   end

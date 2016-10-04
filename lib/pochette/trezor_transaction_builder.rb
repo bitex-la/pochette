@@ -104,7 +104,6 @@ protected
                 depth: 0, 
                 child_num: 0, 
                 fingerprint: 0,
-                path: [],
                 public_key: node.public_key.key,
               }
             }

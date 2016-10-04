@@ -291,7 +291,6 @@ A hash with
             depth: 0, 
             child_num: 0, 
             fingerprint: 0,
-            path: [],
             public_key: '03142b0a6fa6943e7276ddc42582c6b169243d289ff17e7c8101797047eed90c9b',
           }
         },
@@ -301,7 +300,6 @@ A hash with
             depth: 0, 
             child_num: 0, 
             fingerprint: 0,
-            path: [],
             public_key: '027565ceb190647ec5c566805ebc5cb6166ae2ee1d4995495f61b9eff371ec0e61',
           }
         },
@@ -311,7 +309,6 @@ A hash with
             depth: 0, 
             child_num: 0, 
             fingerprint: 0,
-            path: [],
             public_key: '028776ff18f0f3808d6d42749a6e2baee5c75c3f7ae07445403a3a5690d580a0af',
           }
         }

@@ -3,7 +3,7 @@
 # interface and contract.
 require 'open-uri'
 
-class Pochette::Backends::BlockchainInfo
+class Pochette::Backends::BlockchainInfo < Pochette::Backends::Base
   cattr_accessor(:cooldown){1}
   attr_accessor :api_key
 
@@ -16,6 +16,13 @@ class Pochette::Backends::BlockchainInfo
     json['unspent_outputs'].collect do |utxo|
       address = Bitcoin::Script.new(utxo['script'].htb).get_address
       [address, utxo['tx_hash_big_endian'], utxo['tx_output_n'].to_i, utxo['value'], utxo['script']]
+    end
+  rescue OpenURI::HTTPError => e
+    # Blockchain.info returns 500 when there are no unspent outputs
+    if e.io.read == "No free outputs to spend"
+      return []
+    else
+      raise
     end
   end
   
@@ -85,13 +92,12 @@ class Pochette::Backends::BlockchainInfo
     get_json("latestblock", {format: 'json'})['height'].to_i
   end
 
-  def pushtx(hex)
+  def _pushtx(hex)
     uri = URI.parse("https://blockchain.info/pushtx")
     params = { "tx" => hex }
     params['api_code'] = api_key if api_key
     response = Net::HTTP.post_form(uri, params)
     raise StandardError.new(response) if response.code.to_i != 200
-    Bitcoin::Protocol::Tx.new(hex.htb).hash
   end
 
   def get_json(path, params={})

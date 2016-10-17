@@ -92,7 +92,7 @@ class Pochette::Backends::BlockchainInfo < Pochette::Backends::Base
     get_json("latestblock", {format: 'json'})['height'].to_i
   end
 
-  def _pushtx(hex)
+  def propagate(hex)
     uri = URI.parse("https://blockchain.info/pushtx")
     params = { "tx" => hex }
     params['api_code'] = api_key if api_key

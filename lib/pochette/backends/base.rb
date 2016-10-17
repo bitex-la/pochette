@@ -61,11 +61,11 @@ class Pochette::Backends::Base
 
   def pushtx(hex, options = { })
     verify_signatures(hex, options) if options[:verify_signatures]
-    _pushtx(hex)
+    propagate(hex)
     Bitcoin::Protocol::Tx.new(hex.htb).hash
   end
 
-  def _pushtx(hex)
+  def propagate(hex)
     raise NotImplementedError
   end
 
@@ -83,5 +83,6 @@ class Pochette::Backends::Base
         raise Pochette::InvalidSignatureError, "Signature for input #{idx} is invalid."
       end
     end
+    true
   end
 end

@@ -8,7 +8,7 @@ describe Pochette::Backends::Base do
       prev_tx = { bin_outputs: [ { amount: 100000000, script_pubkey: '76a914aadf5d54eda13070d39af72eb5ce40b1d3b8282588ac' } ] }
       expect(subject).to receive(:list_transactions) { [ prev_tx ] }
       expect do
-        subject.verify_signatures(hex)
+        expect(subject.verify_signatures(hex)).to be true
       end.not_to raise_error
     end
 
@@ -23,13 +23,13 @@ describe Pochette::Backends::Base do
   end
 
   describe '#pushtx' do
-    it 'delegates to #_pushtx' do
-      expect(subject).to receive(:_pushtx).with(hex)
+    it 'delegates to #propagate' do
+      expect(subject).to receive(:propagate).with(hex)
       expect(subject.pushtx(hex)).to eq 'fb92420f73af6d25f5fab93435bc6b8ebfff3a07c02abd053f0923ae296fe380'
     end
 
     it 'verifies signatures' do
-      expect(subject).to receive(:_pushtx).with(hex)
+      expect(subject).to receive(:propagate).with(hex)
       expect(subject).to receive(:verify_signatures).with(hex, verify_signatures: true)
       subject.pushtx(hex, verify_signatures: true)
     end

@@ -103,7 +103,7 @@ class Pochette::Backends::BitcoinCore < Pochette::Backends::Base
     client.getinfo[:blocks]
   end
 
-  def _pushtx(hex)
+  def propagate(hex)
     client.sendrawtransaction(hex)
   end
 end

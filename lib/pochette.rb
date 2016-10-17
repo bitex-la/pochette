@@ -30,6 +30,9 @@ module Pochette
 
   module Backends
   end
+
+  class InvalidSignatureError < StandardError
+  end
 end
 
 require "pochette/backends/base"

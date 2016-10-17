@@ -74,13 +74,13 @@ class Pochette::Backends::Base
   end
 
   def verify_signatures(hex, options = { })
-    Bitcoin::P::Tx.new(serialized.htb)
+    tx = Bitcoin::P::Tx.new(hex.htb)
     tx.inputs.each_with_index do |input, idx|
       prev_tx = list_transactions([ input.previous_output ]).first
       outputs = prev_tx[:bin_outputs]
       script_pubkey = outputs[input.prev_out_index][:script_pubkey].htb
       unless tx.verify_input_signature(idx, script_pubkey, Time.now.to_i, options)
-        raise "Signature for input #{idx} is invalid."
+        raise Pochette::InvalidSignatureError, "Signature for input #{idx} is invalid."
       end
     end
   end

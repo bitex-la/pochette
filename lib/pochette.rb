@@ -30,8 +30,12 @@ module Pochette
 
   module Backends
   end
+
+  class InvalidSignatureError < StandardError
+  end
 end
 
+require "pochette/backends/base"
 require "pochette/backends/bitcoin_core"
 require "pochette/backends/blockchain_info"
 require "pochette/backends/trendy"

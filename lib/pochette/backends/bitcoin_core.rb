@@ -1,7 +1,7 @@
 # A bitcoin backend that uses bitcoin-core to retrieve information.
 # See Pochette::Backends::Trendy to learn more about the backend
 # interface and contract.
-class Pochette::Backends::BitcoinCore 
+class Pochette::Backends::BitcoinCore < Pochette::Backends::Base
   def initialize(rpc_url)
     @rpc_url = rpc_url
   end
@@ -103,7 +103,7 @@ class Pochette::Backends::BitcoinCore
     client.getinfo[:blocks]
   end
 
-  def pushtx(hex)
+  def propagate(hex)
     client.sendrawtransaction(hex)
   end
 end

@@ -72,5 +72,10 @@ describe Pochette::Backends::Trendy do
     two.should_receive(:block_height)
     trendy.block_height
   end
+
+  it 'delegates #verify_signatures' do
+    two.should_receive(:verify_signatures).with('rawhex')
+    trendy.verify_signatures('rawhex')
+  end
 end
 

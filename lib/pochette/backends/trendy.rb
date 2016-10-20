@@ -7,7 +7,8 @@ class Pochette::Backends::Trendy < Pochette::Backends::Base
     @backends = backends
   end
 
-  delegate :incoming_for, :balances_for, :list_unspent, :list_transactions, :pushtx, :block_height, to: :backend
+  delegate :incoming_for, :balances_for, :list_unspent, :list_transactions,
+    :pushtx, :block_height, :verify_signatures, to: :backend
 
 protected
 

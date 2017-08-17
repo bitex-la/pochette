@@ -20,6 +20,7 @@ class Pochette::Backends::BitcoinCore < Pochette::Backends::Base
     
     result = []
     client.listsinceblock(block_hash, 1, true)[:transactions].each do |t|
+      next if t.has_key?(:trusted) && !t[:trusted]
       next unless t[:category] == 'receive'
       next unless addresses.include?(t[:address])
       senders = []

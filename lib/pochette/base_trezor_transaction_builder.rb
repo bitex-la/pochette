@@ -35,6 +35,7 @@ class Pochette::BaseTrezorTransactionBuilder < Pochette::BaseTransactionBuilder
       address_n: C::ArrayOf[Integer],
       prev_hash: String,
       prev_index: Integer,
+      amount: C::Maybe[Integer],
       script_type: C::Maybe[C::Any],
       multisig: C::Maybe[C::Any],
     }],
@@ -87,8 +88,14 @@ protected
   def build_trezor_inputs
     self.trezor_inputs = inputs.collect do |input|
       address = bip32_address_lookup[input[0]]
-      hash = { address_n: address[1],
-        prev_hash: input[1], prev_index: input[2] }
+      hash = {
+        address_n: address[1],
+        prev_hash: input[1],
+        prev_index: input[2],
+      }
+      if self.class.force_bip143
+        hash[:amount] = input[3]
+      end
       if address.size == 3
         xpubs = address.first
         m = address.last

@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.add_dependency "activesupport", "~> 4.2"
   spec.add_dependency "bitcoin_rpc", "~> 0.1.1"
-  spec.add_dependency "bitcoin-ruby", "~> 0.0.7"
+  spec.add_dependency "bitcoin-ruby", "~> 0.0.13"
   spec.add_dependency "money-tree", "~> 0.9.0"
   spec.add_dependency "contracts", "~> 0.12.0"
 

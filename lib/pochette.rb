@@ -10,7 +10,8 @@ C = Contracts
 module Pochette
   include Contracts::Core
 
-  mattr_accessor :backend
+  mattr_accessor :btc_backend
+  mattr_accessor :bch_backend
   
   Contract C::Bool => C::Bool
   def self.testnet=(v)
@@ -39,5 +40,9 @@ require "pochette/backends/base"
 require "pochette/backends/bitcoin_core"
 require "pochette/backends/blockchain_info"
 require "pochette/backends/trendy"
-require "pochette/transaction_builder"
-require "pochette/trezor_transaction_builder"
+require "pochette/base_transaction_builder"
+require "pochette/btc_transaction_builder"
+require "pochette/bch_transaction_builder"
+require "pochette/base_trezor_transaction_builder"
+require "pochette/btc_trezor_transaction_builder"
+require "pochette/bch_trezor_transaction_builder"

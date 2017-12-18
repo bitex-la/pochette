@@ -1,18 +1,36 @@
 require 'spec_helper'
 
-describe Pochette::TransactionBuilder do
+describe Pochette::BtcTransactionBuilder do
   before(:each) do
-    Pochette::TransactionBuilder.backend = double(
+    Pochette::BtcTransactionBuilder.backend = double(
       list_unspent: list_unspent_mock,
       list_transactions: list_transactions_mock
     )
   end
-  after(:each){ Pochette.backend = nil }
+  after(:each){ 
+    Pochette::BtcTransactionBuilder.backend = nil 
+    Pochette::BchTransactionBuilder.backend = nil 
+  }
+
+  it 'does not get confused between bch and btc backends' do
+    # This spec is here to make absolutely sure there's no
+    # way in hell we can cause a race condition between bch/btc backends
+    # when using these class attributes.
+    Pochette::BtcTransactionBuilder.backend = double(foo: :btc)
+
+    Pochette::BtcTransactionBuilder.backend.foo.should == :btc
+    Pochette::BchTransactionBuilder.backend.should be_nil 
+
+    Pochette::BchTransactionBuilder.backend = double(foo: :bch)
+
+    Pochette::BtcTransactionBuilder.backend.foo.should == :btc
+    Pochette::BchTransactionBuilder.backend.foo.should == :bch
+  end
 
   it 'selects one output greater than the required amount' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 1_0000_0000]]
-    transaction = Pochette::TransactionBuilder.new(addresses: addresses, outputs: outputs)
+    transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.should be_valid
     transaction.as_hash.should == {
       input_total: 2_0000_0000,
@@ -35,7 +53,7 @@ describe Pochette::TransactionBuilder do
   it 'selects more outputs to match the required amount' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 3_0000_0000]]
-    transaction = Pochette::TransactionBuilder.new(addresses: addresses, outputs: outputs)
+    transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.should be_valid
     transaction.as_hash.should == {
       input_total: 4_0000_0000,
@@ -63,7 +81,7 @@ describe Pochette::TransactionBuilder do
   it 'sends change to change address instead of first sender when specified' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 3_0000_0000]]
-    transaction = Pochette::TransactionBuilder.new(addresses: addresses,
+    transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses,
        outputs: outputs, change_address: '1CHANGEIT')
     transaction.should be_valid
     transaction.as_hash[:outputs].last.first.should == '1CHANGEIT'
@@ -72,7 +90,7 @@ describe Pochette::TransactionBuilder do
   it 'uses up all utxos when spend_all is instructed' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 1_0000_0000]]
-    transaction = Pochette::TransactionBuilder.new(addresses: addresses,
+    transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses,
        outputs: outputs, spend_all: true)
     transaction.should be_valid
     transaction.as_hash.should == {
@@ -105,7 +123,7 @@ describe Pochette::TransactionBuilder do
   it 'selects another utxo just to pay for fees' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 2_0000_0000]]
-    transaction = Pochette::TransactionBuilder.new(addresses: addresses, outputs: outputs)
+    transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.should be_valid
     transaction.as_hash.should == {
       input_total: 4_0000_0000,
@@ -133,7 +151,7 @@ describe Pochette::TransactionBuilder do
   it 'can set a higher fee per kb' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 3_0000_0000]]
-    transaction = Pochette::TransactionBuilder.new(addresses: addresses,
+    transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses,
       outputs: outputs, fee_per_kb: 100000)
     transaction.should be_valid
     transaction.as_hash.should == {
@@ -163,7 +181,7 @@ describe Pochette::TransactionBuilder do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 3_0000_0000]]
     blacklist = [["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1]]
-    transaction = Pochette::TransactionBuilder.new(addresses: addresses,
+    transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses,
        outputs: outputs, utxo_blacklist: blacklist).as_hash
     transaction.should == {
       input_total: 4_0000_0000,
@@ -190,14 +208,14 @@ describe Pochette::TransactionBuilder do
 
   it 'fails if no addresses are given' do
     expect do
-      Pochette::TransactionBuilder.new({})
+      Pochette::BtcTransactionBuilder.new({})
     end.to raise_exception ParamContractError
   end
 
   it 'fails if minimum output size is not met' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 500]]
-    transaction = Pochette::TransactionBuilder.new(addresses: addresses, outputs: outputs)
+    transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.should_not be_valid
     transaction.errors.should == [:dust_in_outputs]
     transaction.as_hash.should be_nil
@@ -206,7 +224,7 @@ describe Pochette::TransactionBuilder do
   it 'fails if not enough money for outputs' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 7_0000_0000]]
-    transaction = Pochette::TransactionBuilder.new(addresses: addresses, outputs: outputs)
+    transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.should_not be_valid
     transaction.errors.should == [:insufficient_funds]
     transaction.as_hash.should be_nil
@@ -215,7 +233,7 @@ describe Pochette::TransactionBuilder do
   it 'fails if not enough money for outputs' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 6_0000_0000]]
-    transaction = Pochette::TransactionBuilder.new(addresses: addresses, outputs: outputs)
+    transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.should_not be_valid
     transaction.errors.should == [:insufficient_funds]
     transaction.as_hash.should be_nil
@@ -224,7 +242,7 @@ describe Pochette::TransactionBuilder do
   it 'includes a higher fee if change was too small' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 3_9998_9600]]
-    transaction = Pochette::TransactionBuilder.new(addresses: addresses, outputs: outputs)
+    transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.as_hash.should == {
       input_total: 400000000,
       output_total: 399989600,
@@ -250,7 +268,7 @@ describe Pochette::TransactionBuilder do
   it 'fails if no outputs were given and not spending all' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
     outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 3_9998_9600]]
-    transaction = Pochette::TransactionBuilder.new(addresses: addresses)
+    transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses)
     transaction.should_not be_valid
     transaction.errors.should == [:try_with_spend_all]
   end

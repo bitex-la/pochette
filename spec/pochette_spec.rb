@@ -8,29 +8,35 @@ describe Pochette do
   it 'can set backend at the instance, class or global level.' do
     args = {addresses: ['a','b']}
     bip32args = {bip32_addresses: [['a',[1,1]]] }
-    Pochette.backend.should be_nil
-    Pochette::TransactionBuilder.backend.should be_nil
-    Pochette::TransactionBuilder.new(args).backend.should be_nil
-    Pochette::TrezorTransactionBuilder.backend.should be_nil
-    Pochette::TrezorTransactionBuilder
+    Pochette.btc_backend.should be_nil
+    Pochette.bch_backend.should be_nil
+    Pochette::BtcTransactionBuilder.backend.should be_nil
+    Pochette::BtcTransactionBuilder.new(args).backend.should be_nil
+
+    Pochette::BtcTrezorTransactionBuilder.backend.should be_nil
+    Pochette::BtcTrezorTransactionBuilder
       .new(bip32args).backend.should be_nil
-    Pochette.backend = 1
-    Pochette::TransactionBuilder.backend.should == 1
-    Pochette::TransactionBuilder.backend = 2
-    Pochette::TransactionBuilder.new(args).backend.should == 2
-    foo = Pochette::TransactionBuilder.new(addresses: ['a','b'], backend: 3)
+
+    Pochette.btc_backend = 1
+    Pochette::BtcTransactionBuilder.backend.should == 1
+    Pochette::BtcTransactionBuilder.backend = 2
+    Pochette::BtcTransactionBuilder.new(args).backend.should == 2
+    foo = Pochette::BtcTransactionBuilder.new(addresses: ['a','b'], backend: 3)
     foo.backend.should == 3
-    Pochette::TrezorTransactionBuilder.backend.should == 2
-    Pochette::TrezorTransactionBuilder.backend = 4
-    Pochette::TrezorTransactionBuilder
+    Pochette::BtcTrezorTransactionBuilder.backend.should == 2
+    Pochette::BtcTrezorTransactionBuilder.backend = 4
+    Pochette::BtcTrezorTransactionBuilder
       .new(bip32args).backend.should == 4
-    bar = Pochette::TrezorTransactionBuilder.new(bip32args)
+    bar = Pochette::BtcTrezorTransactionBuilder.new(bip32args)
     bar.backend = 5
-    Pochette.backend.should == 1
-    Pochette::TransactionBuilder.backend.should == 2
+    Pochette.btc_backend.should == 1
+    Pochette::BtcTransactionBuilder.backend.should == 2
     foo.backend.should == 3
-    Pochette::TrezorTransactionBuilder.backend.should == 4
+    Pochette::BtcTrezorTransactionBuilder.backend.should == 4
     bar.backend.should == 5
+
+    Pochette.bch_backend.should be_nil
+    Pochette::BchTransactionBuilder.new(args).backend.should be_nil
   end
 
   it 'Has a testnet setter and getter' do

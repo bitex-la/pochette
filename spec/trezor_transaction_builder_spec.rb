@@ -1,15 +1,17 @@
 require 'spec_helper'
 
-describe Pochette::TrezorTransactionBuilder do
+describe Pochette::BtcTransactionBuilder do
   before(:each) do
     Pochette.testnet = true
-    Pochette::TrezorTransactionBuilder.backend = double(
+    Pochette::BtcTrezorTransactionBuilder.backend = double(
       list_unspent: (list_unspent_mock + list_unspent_multisig_mock),
       list_transactions: (list_transactions_mock + list_transactions_multisig_mock)
     )
   end
+
   after(:each){
-    Pochette.backend = nil
+    Pochette.btc_backend = nil
+    Pochette.bch_backend = nil
     Pochette.testnet = false
   }
 
@@ -22,7 +24,7 @@ describe Pochette::TrezorTransactionBuilder do
       [[xpub1, xpub2, xpub3], [42, 1, 1], 2]
     ]
     outputs = [["mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG", 6_0000_0000]]
-    transaction = Pochette::TrezorTransactionBuilder
+    transaction = Pochette::BtcTrezorTransactionBuilder
       .new(bip32_addresses: addresses, outputs: outputs)
     transaction.should be_valid
 

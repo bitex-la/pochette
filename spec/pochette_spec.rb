@@ -36,7 +36,9 @@ describe Pochette do
     bar.backend.should == 5
 
     Pochette.bch_backend.should be_nil
-    Pochette::BchTransactionBuilder.new(args).backend.should be_nil
+    Pochette::BchTransactionBuilder.new(
+      {addresses: ['bchtest:qqshf3tvlmrnfg37hacdyvh6283y5hlhhgep80vn0l']}
+    ).backend.should be_nil
   end
 
   it 'Has a testnet setter and getter' do

@@ -5,6 +5,7 @@ require "active_support/core_ext"
 require "bitcoin"
 require "money-tree"
 require "contracts"
+require "cashaddress"
 C = Contracts
 
 module Pochette

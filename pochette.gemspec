@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bitcoin-ruby", "~> 0.0.13"
   spec.add_dependency "money-tree", "~> 0.9.0"
   spec.add_dependency "contracts", "~> 0.12.0"
+  spec.add_dependency "cashaddress", "~> 0.1.0"
 
   spec.add_development_dependency "bundler", "~> 1.9"
   spec.add_development_dependency "rake", "~> 10.0"

@@ -64,10 +64,16 @@ protected
       self.errors = [:no_bip32_addresses_given]
       return
     end
-    options[:addresses] = options[:bip32_addresses].collect{|a| address_from_bip32(a) }
-    self.bip32_address_lookup = options[:bip32_addresses].reduce({}) do |accum, addr|
-      accum[address_from_bip32(addr)] = addr
-      accum
+
+    options[:addresses] = []
+    self.bip32_address_lookup = {}
+
+    options[:bip32_addresses].each do |array|
+      address = address_from_bip32(array)
+      options[:addresses] << address
+
+      internal = self.class.force_bip143 ? Cashaddress.to_legacy(address) : address
+      self.bip32_address_lookup[internal] = array
     end
   end
 
@@ -81,7 +87,7 @@ protected
         MoneyTree::Node.from_bip32(x).node_for_path(array[1].join('/')).public_key.key
       end
       address, _ = Bitcoin.pubkeys_to_p2sh_multisig_address(array.last, *public_keys)
-      address
+      self.class.force_bip143 ? Cashaddress.from_legacy(address) : address
     end
   end
 
@@ -123,6 +129,7 @@ protected
 
   def build_trezor_outputs
     self.trezor_outputs = outputs.collect do |address, amount|
+      address = Cashaddress.to_legacy(address) if self.class.force_bip143 
       type = Bitcoin.address_type(address) == :hash160 ? 'PAYTOADDRESS' : 'PAYTOSCRIPTHASH'
       { script_type: type, address: address, amount: amount.to_i }
     end
@@ -133,3 +140,4 @@ protected
     self.transactions = backend.list_transactions(txids)
   end
 end
+

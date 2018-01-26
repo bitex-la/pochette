@@ -40,6 +40,7 @@ end
 require "pochette/backends/base"
 require "pochette/backends/bitcoin_core"
 require "pochette/backends/blockchain_info"
+require "pochette/backends/bitcoin_cash_wrapper"
 require "pochette/backends/trendy"
 require "pochette/base_transaction_builder"
 require "pochette/btc_transaction_builder"

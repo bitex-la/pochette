@@ -32,4 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3"
   spec.add_development_dependency "webmock", "~> 1.21"
   spec.add_development_dependency "timecop", "~> 0.8.0"
+  spec.add_development_dependency "byebug", "~> 9.0"
 end

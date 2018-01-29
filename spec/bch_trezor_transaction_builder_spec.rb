@@ -3,10 +3,11 @@ require 'spec_helper'
 describe Pochette::BchTransactionBuilder do
   before(:each) do
     Pochette.testnet = true
-    Pochette::BchTrezorTransactionBuilder.backend = double(
+    Pochette::BchTrezorTransactionBuilder.backend = 
+      Pochette::Backends::BitcoinCashWrapper.new(double(
       list_unspent: (list_unspent_mock + list_unspent_multisig_mock),
       list_transactions: (list_transactions_mock + list_transactions_multisig_mock)
-    )
+    ))
   end
 
   after(:each){
@@ -45,16 +46,16 @@ describe Pochette::BchTransactionBuilder do
           amount: 9999_0000 },
       ],
       inputs: [
-        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
+        [ "bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05",
           "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1, 200000000,
           "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
-        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
+        [ "bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05",
           "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1, 200000000,
           "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
-        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
+        [ "bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05",
           "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 1, 200000000,
           "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
-        ["2MtpP1aLi2bjFBPhPN7suFZwjgb2k2tBmCp",
+        [ "bchtest:pqgn6cjf37zdk79asdh3ng44tesn648xscf0nw69xk",
           "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee", 0, 100000000,
           "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
       ],

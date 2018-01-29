@@ -65,16 +65,10 @@ protected
       return
     end
 
-    options[:addresses] = []
-    self.bip32_address_lookup = {}
-
-    options[:bip32_addresses].each do |array|
-      address = address_from_bip32(array)
-      options[:addresses] << address
-
-      internal = self.class.force_bip143 ? Cashaddress.to_legacy(address) : address
-      self.bip32_address_lookup[internal] = array
-    end
+    self.bip32_address_lookup = options[:bip32_addresses].map do |array|
+      [address_from_bip32(array), array]
+    end.to_h
+    options[:addresses] = self.bip32_address_lookup.keys
   end
 
   # Bip32 addresses may look like an address with a bip32 path, or

@@ -139,7 +139,6 @@ A hash with
 </dd>
 </dl>
 
-
 ```
   > require 'pochette'
   > backend = Pochette::Backends::BlockchainInfo.new
@@ -320,11 +319,10 @@ A hash with
 <dt>trezor_outputs:</dt>
 <dd>
   List of outputs as Hashes with:
-  { script_type: 'PAYTOADDRESS',
-    address: '1address-as-string',
-    amount: amount in satoshis }
+  { script_type: 'PAYTOADDRESS', address: '1address-as-string', amount: amount in satoshis }
 </dd>
 </dl>
+
 
 ```
   > require 'pochette'

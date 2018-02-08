@@ -16,7 +16,8 @@ class Pochette::Backends::BitcoinCashWrapper < Pochette::Backends::Base
        row[2],
        row[3],
        row[4],
-       row[-1].split(',').map{|a| Cashaddress.from_legacy(a) }.join(',')
+       row[5].split(',').map{|a| Cashaddress.from_legacy(a) }.join(','),
+       row[6]
       ]
     end
   end

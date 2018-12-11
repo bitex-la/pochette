@@ -186,8 +186,8 @@ describe Pochette::Backends::BitcoinCore do
   end
 
   it 'implements block height' do
-    stub_rpc('getinfo', [], 'getinfo')
-    backend.block_height.should == 315281
+    stub_rpc('getblockcount', [], 'getblockcount')
+    backend.block_height.should == 504457
   end
 
   let(:hex) { '01000000011da9283b4ddf8d89eb996988b89ead56cecdc44041ab38bf787f1206cd90b51e000000006a47304402200ebea9f630f3ee35fa467ffc234592c79538ecd6eb1c9199eb23c4a16a0485a20220172ecaf6975902584987d295b8dddf8f46ec32ca19122510e22405ba52d1f13201210256d16d76a49e6c8e2edc1c265d600ec1a64a45153d45c29a2fd0228c24c3a524ffffffff01405dc600000000001976a9140dfc8bafc8419853b34d5e072ad37d1a5159f58488ac00000000' }

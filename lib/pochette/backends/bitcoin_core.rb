@@ -14,7 +14,6 @@ class Pochette::Backends::BitcoinCore < Pochette::Backends::Base
     return [] if addresses.empty?
 
     addresses = addresses.to_set
-    block_height = client.getblockcount
     from_block = block_height - ((Time.now - min_date) / 60 / 60 * 6).ceil
     block_hash = client.getblockhash(from_block)
     
@@ -101,7 +100,7 @@ class Pochette::Backends::BitcoinCore < Pochette::Backends::Base
   end
 
   def block_height
-    client.getinfo[:blocks]
+    client.getblockcount
   end
 
   def propagate(hex)

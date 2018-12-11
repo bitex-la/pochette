@@ -1,1 +1,0 @@
-{"result": { "version" : 100000, "protocolversion" : 70002, "walletversion" : 60000, "balance" : 1.27007770, "blocks" : 315281, "timeoffset" : 0, "connections" : 9, "proxy" : "", "difficulty" : 1.00000000, "testnet" : true, "keypoololdest" : 1418924649, "keypoolsize" : 101, "paytxfee" : 0.00000000, "relayfee" : 0.00001000, "errors" : "" },"error":null,"id":"jsonrpc"}

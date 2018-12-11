@@ -173,4 +173,24 @@ describe Pochette::BtcTransactionBuilder do
       ],
     }
   end
+
+  it 'uses supplied inputs and transactions' do
+    xpub1 = 'xpub661MyMwAqRbcGCmcnz4JtnieVyuvgQFGqZqw3KS1g9khndpF3segkAYbYCKKaQ9Di2ZuWLaZU4Axt7TrKq41aVYx8XTbDbQFzhhDMntKLU5'
+    xpub2 = 'xpub661MyMwAqRbcFwc3Nmz8WmMU9okGmeVSmuprwNHCVsfhy6vMyg6g79octqwNftK4g62TMWmb7UtVpnAWnANzqwtKrCDFe2UaDCv1HoErssE'
+    xpub3 = 'xpub661MyMwAqRbcGkqPSKVkwTMtFZzEpbWXjM4t1Dv1XQbfMxtyLRGupWkp3fcSCDtp6nd1AUrRtq8tnFGTYgkY1pB9muwzaBDnJSMo2rVENhz'
+    addresses = [
+      ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", [42, 1, 1]],
+      [[xpub1, xpub2, xpub3], [42, 1, 1], 2]
+    ]
+    outputs = [["mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG", 1_0000_0000]]
+    transaction = Pochette::BtcTrezorTransactionBuilder.new(
+      inputs: list_unspent_mock,
+      bip32_addresses: addresses,
+      outputs: outputs,
+      transactions: list_transactions_mock
+    )
+    expect(transaction).to be_valid
+    expect(Pochette::BtcTrezorTransactionBuilder.backend).not_to have_received :list_unspent
+    expect(Pochette::BtcTrezorTransactionBuilder.backend).not_to have_received :list_transactions
+  end
 end

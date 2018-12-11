@@ -272,5 +272,17 @@ describe Pochette::BtcTransactionBuilder do
     transaction.should_not be_valid
     transaction.errors.should == [:try_with_spend_all]
   end
+
+  it 'uses supplied inputs' do
+    addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
+    outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 3_9998_9600]]
+    transaction = Pochette::BtcTransactionBuilder.new(
+      inputs: list_unspent_mock,
+      addresses: addresses,
+      outputs: outputs
+    )
+    expect(transaction).to be_valid
+    expect(Pochette::BtcTransactionBuilder.backend).not_to have_received :list_unspent
+  end
 end
 

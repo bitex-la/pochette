@@ -181,4 +181,26 @@ describe Pochette::BchTransactionBuilder do
       ],
     }
   end
+
+  it 'uses supplied inputs' do
+    xpub1 = 'xpub661MyMwAqRbcGCmcnz4JtnieVyuvgQFGqZqw3KS1g9khndpF3segkAYbYCKKaQ9Di2ZuWLaZU4Axt7TrKq41aVYx8XTbDbQFzhhDMntKLU5'
+    xpub2 = 'xpub661MyMwAqRbcFwc3Nmz8WmMU9okGmeVSmuprwNHCVsfhy6vMyg6g79octqwNftK4g62TMWmb7UtVpnAWnANzqwtKrCDFe2UaDCv1HoErssE'
+    xpub3 = 'xpub661MyMwAqRbcGkqPSKVkwTMtFZzEpbWXjM4t1Dv1XQbfMxtyLRGupWkp3fcSCDtp6nd1AUrRtq8tnFGTYgkY1pB9muwzaBDnJSMo2rVENhz'
+    addresses = [
+      ["bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05", [42, 1, 1]],
+      [[xpub1, xpub2, xpub3], [42, 1, 1], 2]
+    ]
+    outputs = [["bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0", 6_0000_0000]]
+    transaction = Pochette::BchTrezorTransactionBuilder.new(
+      inputs: (list_unspent_mock + list_unspent_multisig_mock).map { |utxo|
+        utxo.tap { |u| u[0] = Cashaddress.from_legacy(u[0]) }
+      },
+      bip32_addresses: addresses,
+      outputs: outputs,
+      transactions: list_transactions_mock
+    )
+    expect(transaction).to be_valid
+    expect(Pochette::BchTrezorTransactionBuilder.backend.backend).not_to have_received :list_unspent
+    expect(Pochette::BchTrezorTransactionBuilder.backend.backend).not_to have_received :list_transactions
+  end
 end

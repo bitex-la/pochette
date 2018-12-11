@@ -130,8 +130,7 @@ protected
   end
 
   def build_transactions
-    txids = inputs.collect{|i| i[1] }
-    self.transactions = backend.list_transactions(txids)
+    self.transactions = options[:transactions] || backend.list_transactions(inputs.map { |i| i[1] })
   end
 end
 

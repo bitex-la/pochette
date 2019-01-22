@@ -193,4 +193,108 @@ describe Pochette::BtcTransactionBuilder do
     expect(Pochette::BtcTrezorTransactionBuilder.backend).not_to have_received :list_unspent
     expect(Pochette::BtcTrezorTransactionBuilder.backend).not_to have_received :list_transactions
   end
+
+  it 'receives bip32 addresses and formats output for trezor connect' do
+    xpub1 = 'xpub661MyMwAqRbcGCmcnz4JtnieVyuvgQFGqZqw3KS1g9khndpF3segkAYbYCKKaQ9Di2ZuWLaZU4Axt7TrKq41aVYx8XTbDbQFzhhDMntKLU5'
+    xpub2 = 'xpub661MyMwAqRbcFwc3Nmz8WmMU9okGmeVSmuprwNHCVsfhy6vMyg6g79octqwNftK4g62TMWmb7UtVpnAWnANzqwtKrCDFe2UaDCv1HoErssE'
+    xpub3 = 'xpub661MyMwAqRbcGkqPSKVkwTMtFZzEpbWXjM4t1Dv1XQbfMxtyLRGupWkp3fcSCDtp6nd1AUrRtq8tnFGTYgkY1pB9muwzaBDnJSMo2rVENhz'
+    addresses = [
+      ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", [42, 1, 1]],
+      [[xpub1, xpub2, xpub3], [42, 1, 1], 2]
+    ]
+    outputs = [["mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG", 6_0000_0000]]
+    transaction = Pochette::BtcTrezorTransactionBuilder
+      .new(bip32_addresses: addresses,
+           outputs: outputs,
+           trezor_connect: true)
+    transaction.should be_valid
+
+    transaction.as_hash.should == {
+      input_total: 7_0000_0000,
+      output_total: 6_9999_0000,
+      fee: 10000,
+      outputs: [
+        ["mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG", 600000000], 
+        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 99990000]
+      ],
+      trezor_outputs: [
+        { script_type: 'PAYTOADDRESS',
+          address: "mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG",
+          amount: 6_0000_0000 },
+        { script_type: 'PAYTOSCRIPTHASH',
+          address: "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
+          amount: 9999_0000 },
+      ],
+      inputs: [
+        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
+          "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1, 200000000,
+          "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
+        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
+          "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1, 200000000,
+          "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
+        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
+          "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 1, 200000000,
+          "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
+        ["2MtpP1aLi2bjFBPhPN7suFZwjgb2k2tBmCp",
+          "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee", 0, 100000000,
+          "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
+      ],
+      trezor_inputs: [
+        { address_n: [42,1,1],
+          prev_hash: "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
+          prev_index: 1},
+        { address_n: [42,1,1],
+          prev_hash: "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72",
+          prev_index: 1},
+        { address_n: [42, 1, 1],
+          prev_hash: "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
+          prev_index: 1},
+        { address_n: [42,1,1],
+          prev_hash: "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee",
+          prev_index: 0,
+          script_type: 'SPENDMULTISIG',
+          multisig: {
+            signatures: ['','',''],
+            m: 2,
+            pubkeys: [
+              { address_n: [42,1,1],
+                node: {
+                  chain_code: 'a6d47170817f78094180f1a7a3a9df7634df75fa9604d71b87e92a5a6bf9d30a',
+                  depth: 0, 
+                  child_num: 0, 
+                  fingerprint: 0,
+                  public_key: '03142b0a6fa6943e7276ddc42582c6b169243d289ff17e7c8101797047eed90c9b',
+                }
+              },
+              { address_n: [42,1,1],
+                node: {
+                  chain_code: '8c9151740446b9e0063ca934df66c5e14121a0b4d8a360748f1b19bfef675460',
+                  depth: 0, 
+                  child_num: 0, 
+                  fingerprint: 0,
+                  public_key: '027565ceb190647ec5c566805ebc5cb6166ae2ee1d4995495f61b9eff371ec0e61',
+                }
+              },
+              { address_n: [42,1,1],
+                node: {
+                  chain_code: 'de5bc5918414df3777ff52ae733bdbc87431485cfd39aea65da6133e183ef68a',
+                  depth: 0, 
+                  child_num: 0, 
+                  fingerprint: 0,
+                  public_key: '028776ff18f0f3808d6d42749a6e2baee5c75c3f7ae07445403a3a5690d580a0af',
+                }
+              }
+            ]
+          }
+        }
+      ],
+      transactions: nil,
+      utxos_to_blacklist: [
+        ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
+        ["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1],
+        ["1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 1],
+        ["eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee", 0],
+      ],
+    }
+  end
 end

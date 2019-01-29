@@ -52,27 +52,27 @@ describe Pochette::Backends::BitcoinCashWrapper do
     stub_rpc('getrawtransaction', {},
       *(12.times.collect{|i| "incoming_for_getrawtransaction_#{i}" }))
     backend.incoming_for(addresses, 30.days.ago).tap do |r|
-      r.size.should == 6
-      r.should == [
-        [ 500000, "bchtest:qqkcrvssm6m7yfr4e4ljlkst7kpdmhya5udm4gne8z",
+      r.size.should eq(6)
+      r.should eq([
+        [500000, "bchtest:qqkcrvssm6m7yfr4e4ljlkst7kpdmhya5udm4gne8z",
           "fb401691795a73e0160252c00af18327a15006fcdf877ccca0c116809669032e", 1629, 0,
-          "bchtest:qrqp5l9pddrmu5xtm0rqwf8hq82j6ag4vcatt8vqyh"],
+          "bchtest:qrqp5l9pddrmu5xtm0rqwf8hq82j6ag4vcatt8vqyh", nil],
         [100000, "bchtest:qzade0awfkp62twzermgvptx8twf6jfz5c7nxkhzm3",
           "250978b77fe1310d6c72239d9e9589d7ac3dc6edf1b2412806ace5104553da34", 1648, 1,
-          "bchtest:qzsxudft5t2rh22ltld29krn762musysdc4qjsytud"],
+          "bchtest:qzsxudft5t2rh22ltld29krn762musysdc4qjsytud", nil],
         [500000, "bchtest:qz5zujysvmxgzuk3474gfwt049sne5y42cfumfes4c",
           "d9afd460b0a5e065fdd87bf97cb1843a29ea588c59daabd1609794e8166bb75f", 1648, 0,
-          "bchtest:qrqp5l9pddrmu5xtm0rqwf8hq82j6ag4vcatt8vqyh"],
-        [ 100000, "bchtest:qzade0awfkp62twzermgvptx8twf6jfz5c7nxkhzm3",
+          "bchtest:qrqp5l9pddrmu5xtm0rqwf8hq82j6ag4vcatt8vqyh", nil],
+        [100000, "bchtest:qzade0awfkp62twzermgvptx8twf6jfz5c7nxkhzm3",
           "5bd72a4aa7818f47ac8943e3e17519be00c46530760860e608d898d728b9d46e", 553, 1,
-          "bchtest:qzjpek6909ewr9lg92m87s5c84wh7y0ysq49x34nq3"],
-        [ 500000, "bchtest:qzhlqqgn4cekgcd2zcf74j2uxfum2ve8jvq7lsfnlf",
+          "bchtest:qzjpek6909ewr9lg92m87s5c84wh7y0ysq49x34nq3", nil],
+        [500000, "bchtest:qzhlqqgn4cekgcd2zcf74j2uxfum2ve8jvq7lsfnlf",
           "b252037526ecb616ab5901552abb903f00bf73400a1fc49b5b5bd699b84bce77", 1632, 0,
-          "bchtest:qrqp5l9pddrmu5xtm0rqwf8hq82j6ag4vcatt8vqyh"],
-        [ 500000, "bchtest:qrg50axjjgg9d2nd334907926ntg2gu4ncfd5ud36f",
+          "bchtest:qrqp5l9pddrmu5xtm0rqwf8hq82j6ag4vcatt8vqyh", nil],
+        [500000, "bchtest:qrg50axjjgg9d2nd334907926ntg2gu4ncfd5ud36f",
           "ff768084764a05d1de72628432c0a4419538b2786089ec8ad009f6096bc69fe1", 1660, 0,
-          "bchtest:qrqp5l9pddrmu5xtm0rqwf8hq82j6ag4vcatt8vqyh"],
-      ]
+          "bchtest:qrqp5l9pddrmu5xtm0rqwf8hq82j6ag4vcatt8vqyh", nil],
+      ])
     end
   end
   

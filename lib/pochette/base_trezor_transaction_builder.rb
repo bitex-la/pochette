@@ -12,6 +12,7 @@ class Pochette::BaseTrezorTransactionBuilder < Pochette::BaseTransactionBuilder
     :change_address => C::Maybe[String],
     :fee_per_kb => C::Maybe[C::Num],
     :spend_all => C::Maybe[C::Bool],
+    :trezor_connect => C::Maybe[C::Bool]
   }) => C::Any
   def initialize(options)
     options = options.dup
@@ -20,7 +21,7 @@ class Pochette::BaseTrezorTransactionBuilder < Pochette::BaseTransactionBuilder
     return unless valid?
     build_trezor_inputs
     build_trezor_outputs
-    build_transactions
+    build_transactions unless options[:trezor_connect]
   end
 
   Contract C::None => C::Maybe[({
@@ -30,7 +31,7 @@ class Pochette::BaseTrezorTransactionBuilder < Pochette::BaseTransactionBuilder
     :outputs => C::ArrayOf[[String, C::Num]],
     :inputs => C::ArrayOf[[String, String, Integer, C::Num, String]],
     :utxos_to_blacklist => C::ArrayOf[[String, Integer]],
-    :transactions => C::ArrayOf[Hash],
+    :transactions => C::Maybe[C::ArrayOf[Hash]],
     :trezor_inputs => C::ArrayOf[{
       address_n: C::ArrayOf[Integer],
       prev_hash: String,

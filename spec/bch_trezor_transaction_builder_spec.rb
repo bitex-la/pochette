@@ -40,10 +40,10 @@ describe Pochette::BchTransactionBuilder do
       trezor_outputs: [
         { script_type: 'PAYTOADDRESS',
           address: "mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG",
-          amount: 6_0000_0000 },
+          amount: "600000000" },
         { script_type: 'PAYTOSCRIPTHASH',
           address: "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
-          amount: 9999_0000 },
+          amount: "99990000" },
       ],
       inputs: [
         [ "bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05",
@@ -63,23 +63,23 @@ describe Pochette::BchTransactionBuilder do
         { address_n: [42,1,1],
           prev_hash: "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
           prev_index: 1,
-          amount: 200000000
+          amount: "200000000"
         },
         { address_n: [42,1,1],
           prev_hash: "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72",
           prev_index: 1,
-          amount: 200000000
+          amount: "200000000"
         },
         { address_n: [42, 1, 1],
           prev_hash: "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
           prev_index: 1,
-          amount: 200000000
+          amount: "200000000"
         },
         { address_n: [42,1,1],
           prev_hash: "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee",
           prev_index: 0,
           script_type: 'SPENDMULTISIG',
-          amount: 100000000,
+          amount: "100000000",
           multisig: {
             signatures: ['','',''],
             m: 2,
@@ -230,10 +230,10 @@ describe Pochette::BchTransactionBuilder do
       trezor_outputs: [
         { script_type: 'PAYTOADDRESS',
           address: "mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG",
-          amount: 6_0000_0000 },
+          amount: "600000000" },
         { script_type: 'PAYTOSCRIPTHASH',
           address: "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
-          amount: 9999_0000 },
+          amount: "99990000" },
       ],
       inputs: [
         [ "bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05",
@@ -253,23 +253,23 @@ describe Pochette::BchTransactionBuilder do
         { address_n: [42,1,1],
           prev_hash: "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
           prev_index: 1,
-          amount: 200000000
+          amount: "200000000"
         },
         { address_n: [42,1,1],
           prev_hash: "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72",
           prev_index: 1,
-          amount: 200000000
+          amount: "200000000"
         },
         { address_n: [42, 1, 1],
           prev_hash: "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
           prev_index: 1,
-          amount: 200000000
+          amount: "200000000"
         },
         { address_n: [42,1,1],
           prev_hash: "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee",
           prev_index: 0,
           script_type: 'SPENDMULTISIG',
-          amount: 100000000,
+          amount: "100000000",
           multisig: {
             signatures: ['','',''],
             m: 2,

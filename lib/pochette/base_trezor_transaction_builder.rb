@@ -36,14 +36,14 @@ class Pochette::BaseTrezorTransactionBuilder < Pochette::BaseTransactionBuilder
       address_n: C::ArrayOf[Integer],
       prev_hash: String,
       prev_index: Integer,
-      amount: C::Maybe[Integer],
+      amount: C::Maybe[String],
       script_type: C::Maybe[C::Any],
       multisig: C::Maybe[C::Any],
     }],
     :trezor_outputs => C::ArrayOf[{
       script_type: String,
       address: String,
-      amount: C::Num
+      amount: String
     }]
   })]
   def as_hash
@@ -95,7 +95,7 @@ protected
         prev_index: input[2],
       }
       if self.class.force_bip143
-        hash[:amount] = input[3]
+        hash[:amount] = input[3].to_s
       end
       if address.size == 3
         xpubs = address.first
@@ -126,7 +126,7 @@ protected
     self.trezor_outputs = outputs.collect do |address, amount|
       address = Cashaddress.to_legacy(address) if self.class.force_bip143 
       type = Bitcoin.address_type(address) == :hash160 ? 'PAYTOADDRESS' : 'PAYTOSCRIPTHASH'
-      { script_type: type, address: address, amount: amount.to_i }
+      { script_type: type, address: address, amount: amount.to_i.to_s }
     end
   end
 

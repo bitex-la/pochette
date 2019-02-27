@@ -39,10 +39,10 @@ describe Pochette::BtcTransactionBuilder do
       trezor_outputs: [
         { script_type: 'PAYTOADDRESS',
           address: "mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG",
-          amount: 6_0000_0000 },
+          amount: "600000000" },
         { script_type: 'PAYTOSCRIPTHASH',
           address: "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
-          amount: 9999_0000 },
+          amount: "99990000" },
       ],
       inputs: [
         ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
@@ -220,10 +220,10 @@ describe Pochette::BtcTransactionBuilder do
       trezor_outputs: [
         { script_type: 'PAYTOADDRESS',
           address: "mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG",
-          amount: 6_0000_0000 },
+          amount: "600000000" },
         { script_type: 'PAYTOSCRIPTHASH',
           address: "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
-          amount: 9999_0000 },
+          amount: "99990000" },
       ],
       inputs: [
         ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",

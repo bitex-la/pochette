@@ -19,7 +19,6 @@ class Pochette::BaseTrezorTransactionBuilder < Pochette::BaseTransactionBuilder
     initialize_bip32_addresses(options)
     super(options)
     return unless valid?
-    build_trezor_inputs
     build_trezor_outputs
     build_transactions unless options[:trezor_connect]
   end
@@ -51,10 +50,12 @@ class Pochette::BaseTrezorTransactionBuilder < Pochette::BaseTransactionBuilder
     super.merge(
       trezor_inputs: trezor_inputs,
       trezor_outputs: trezor_outputs,
-      transactions: transactions)
+      transactions: transactions
+    )
   end
 
-protected
+  protected
+
   attr_accessor :trezor_outputs
   attr_accessor :trezor_inputs
   attr_accessor :transactions
@@ -69,7 +70,7 @@ protected
     self.bip32_address_lookup = options[:bip32_addresses].map do |array|
       [address_from_bip32(array), array]
     end.to_h
-    options[:addresses] = self.bip32_address_lookup.keys
+    options[:addresses] = bip32_address_lookup.keys
   end
 
   # Bip32 addresses may look like an address with a bip32 path, or
@@ -86,7 +87,7 @@ protected
     end
   end
 
-  def build_trezor_inputs
+  def base_build_trezor_inputs(inputs)
     self.trezor_inputs = inputs.collect do |input|
       address = bip32_address_lookup[input[0]]
       hash = {
@@ -94,7 +95,7 @@ protected
         prev_hash: input[1],
         prev_index: input[2]
       }
-      hash[:amount] = input[3].to_s if self.class.force_bip143
+      yield input, hash, address
       if address.size == 3
         xpubs = address.first
         m = address.last

@@ -31,7 +31,7 @@ describe Pochette::BtcTransactionBuilder do
 
     transaction.as_hash.should == {
       input_total: 8_5000_0000,
-      output_total: 849990000,
+      output_total: 8_4999_0000,
       fee: 10000,
       outputs: [
         ["mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG", 750000000], 

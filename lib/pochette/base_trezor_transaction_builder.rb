@@ -92,11 +92,9 @@ protected
       hash = {
         address_n: address[1],
         prev_hash: input[1],
-        prev_index: input[2],
+        prev_index: input[2]
       }
-      if self.class.force_bip143
-        hash[:amount] = input[3].to_s
-      end
+      hash[:amount] = input[3].to_s if self.class.force_bip143
       if address.size == 3
         xpubs = address.first
         m = address.last
@@ -106,13 +104,14 @@ protected
           m: m,
           pubkeys: xpubs.collect do |xpub|
             node = MoneyTree::Node.from_bip32(xpub)
-            { address_n: address[1],
+            {
+              address_n: address[1],
               node: {
                 chain_code: node.chain_code.to_s(16),
-                depth: 0, 
-                child_num: 0, 
+                depth: 0,
+                child_num: 0,
                 fingerprint: 0,
-                public_key: node.public_key.key,
+                public_key: node.public_key.key
               }
             }
           end
@@ -124,7 +123,7 @@ protected
 
   def build_trezor_outputs
     self.trezor_outputs = outputs.collect do |address, amount|
-      address = Cashaddress.to_legacy(address) if self.class.force_bip143 
+      address = Cashaddress.to_legacy(address) if self.class.force_bip143
       type = Bitcoin.address_type(address) == :hash160 ? 'PAYTOADDRESS' : 'PAYTOSCRIPTHASH'
       { script_type: type, address: address, amount: amount.to_i.to_s }
     end

@@ -1,0 +1,30 @@
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+
+Metrics/LineLength:
+  Max: 130
+
+Metrics/ClassLength:
+  Max: 200
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/AbcSize:
+  Max: 18
+
+Metrics/ParameterLists:
+  Max: 7
+
+Metrics/CyclomaticComplexity:
+  Max: 8
+
+AllCops:
+  TargetRubyVersion: 2.3
+  Exclude:
+    - 'Gemfile'
+    - 'Gemfile.lock'
+    - 'LICENSE.txt'
+    - 'README.md'
+    - 'bin/*'
+    - 'spec/**/*'

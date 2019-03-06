@@ -21,28 +21,29 @@ describe Pochette::BchTransactionBuilder do
     xpub2 = 'xpub661MyMwAqRbcFwc3Nmz8WmMU9okGmeVSmuprwNHCVsfhy6vMyg6g79octqwNftK4g62TMWmb7UtVpnAWnANzqwtKrCDFe2UaDCv1HoErssE'
     xpub3 = 'xpub661MyMwAqRbcGkqPSKVkwTMtFZzEpbWXjM4t1Dv1XQbfMxtyLRGupWkp3fcSCDtp6nd1AUrRtq8tnFGTYgkY1pB9muwzaBDnJSMo2rVENhz'
     addresses = [
-      ["bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05", [42, 1, 1]],
+      ['bchtest:qp82lfltxpfjmr02aqx93kmwe6a32qtkucp4e2cgyd', [41, 1, 1]],
+      ['bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05', [42, 1, 1]],
       [[xpub1, xpub2, xpub3], [42, 1, 1], 2]
     ]
-    outputs = [["bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0", 6_0000_0000]]
+    outputs = [["bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0", 7_5000_0000]]
     transaction = Pochette::BchTrezorTransactionBuilder
       .new(bip32_addresses: addresses, outputs: outputs)
     transaction.should be_valid
 
     transaction.as_hash.should == {
-      input_total: 7_0000_0000,
-      output_total: 6_9999_0000,
+      input_total: 8_5000_0000,
+      output_total: 8_4999_0000,
       fee: 10000,
       outputs: [
-        ["bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0", 600000000],
-        ["bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05", 99990000]
+        ["bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0", 750000000],
+        ["bchtest:qp82lfltxpfjmr02aqx93kmwe6a32qtkucp4e2cgyd", 99990000]
       ],
       trezor_outputs: [
         { script_type: 'PAYTOADDRESS',
           address: "mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG",
-          amount: "600000000" },
-        { script_type: 'PAYTOSCRIPTHASH',
-          address: "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
+          amount: "750000000" },
+        { script_type: 'PAYTOADDRESS',
+          address: "mnh1Roe5yQe473zZnJLoTjuyRp9L7tZuzj",
           amount: "99990000" },
       ],
       inputs: [
@@ -55,10 +56,14 @@ describe Pochette::BchTransactionBuilder do
         [ "bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05",
           "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 1, 200000000,
           "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
+        [ "bchtest:qp82lfltxpfjmr02aqx93kmwe6a32qtkucp4e2cgyd",
+          "9gb1op2beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 0, 150000000,
+          "19ag1420993489de25302418540f4b410c0c1d3e1d05a988ac"],
         [ "bchtest:pqgn6cjf37zdk79asdh3ng44tesn648xscf0nw69xk",
           "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee", 0, 100000000,
           "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
       ],
+
       trezor_inputs: [
         { address_n: [42,1,1],
           prev_hash: "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
@@ -74,6 +79,11 @@ describe Pochette::BchTransactionBuilder do
           prev_hash: "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
           prev_index: 1,
           amount: "200000000"
+        },
+        { address_n: [41, 1, 1],
+          prev_hash: "9gb1op2beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
+          prev_index: 0,
+          amount: "150000000"
         },
         { address_n: [42,1,1],
           prev_hash: "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee",
@@ -159,6 +169,18 @@ describe Pochette::BchTransactionBuilder do
             { amount: 681715, script_pubkey: "5c7861393134..."}
           ]
         },
+        { "hash": "9gb1op2beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
+          "version": "1",
+          "lock_time": "0",
+          "inputs": [
+            { "prev_hash": "158d6bbe586b4e00347f992e8296532d69f902d0ead32d964b6c87d4f8f0d3ea",
+              "prev_index": 0, "sequence": "\\xffffffff", "script_sig": "SCRIPTSCRIPTSCRIPT" }
+          ],
+          "bin_outputs": [
+            { "amount": 4814421497, "script_pubkey": "5c7837366139..." },
+            { "amount": 681715, "script_pubkey": "5c7861393134..." }
+          ]
+        },
         { hash: "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee",
           version: "1",
           lock_time: "0",
@@ -177,6 +199,7 @@ describe Pochette::BchTransactionBuilder do
         ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
         ["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1],
         ["1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 1],
+        ["9gb1op2beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 0],
         ["eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee", 0],
       ],
     }
@@ -187,10 +210,11 @@ describe Pochette::BchTransactionBuilder do
     xpub2 = 'xpub661MyMwAqRbcFwc3Nmz8WmMU9okGmeVSmuprwNHCVsfhy6vMyg6g79octqwNftK4g62TMWmb7UtVpnAWnANzqwtKrCDFe2UaDCv1HoErssE'
     xpub3 = 'xpub661MyMwAqRbcGkqPSKVkwTMtFZzEpbWXjM4t1Dv1XQbfMxtyLRGupWkp3fcSCDtp6nd1AUrRtq8tnFGTYgkY1pB9muwzaBDnJSMo2rVENhz'
     addresses = [
-      ["bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05", [42, 1, 1]],
+      ['bchtest:qp82lfltxpfjmr02aqx93kmwe6a32qtkucp4e2cgyd', [41, 1, 1]],
+      ['bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05', [42, 1, 1]],
       [[xpub1, xpub2, xpub3], [42, 1, 1], 2]
     ]
-    outputs = [["bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0", 6_0000_0000]]
+    outputs = [["bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0", 7_5000_0000]]
     transaction = Pochette::BchTrezorTransactionBuilder.new(
       inputs: (list_unspent_mock + list_unspent_multisig_mock).map { |utxo|
         utxo.tap { |u| u[0] = Cashaddress.from_legacy(u[0]) }
@@ -209,10 +233,11 @@ describe Pochette::BchTransactionBuilder do
     xpub2 = 'xpub661MyMwAqRbcFwc3Nmz8WmMU9okGmeVSmuprwNHCVsfhy6vMyg6g79octqwNftK4g62TMWmb7UtVpnAWnANzqwtKrCDFe2UaDCv1HoErssE'
     xpub3 = 'xpub661MyMwAqRbcGkqPSKVkwTMtFZzEpbWXjM4t1Dv1XQbfMxtyLRGupWkp3fcSCDtp6nd1AUrRtq8tnFGTYgkY1pB9muwzaBDnJSMo2rVENhz'
     addresses = [
-      ["bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05", [42, 1, 1]],
+      ['bchtest:qp82lfltxpfjmr02aqx93kmwe6a32qtkucp4e2cgyd', [41, 1, 1]],
+      ['bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05', [42, 1, 1]],
       [[xpub1, xpub2, xpub3], [42, 1, 1], 2]
     ]
-    outputs = [["bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0", 6_0000_0000]]
+    outputs = [["bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0", 7_5000_0000]]
     transaction = Pochette::BchTrezorTransactionBuilder
       .new(bip32_addresses: addresses,
            outputs: outputs,
@@ -220,19 +245,19 @@ describe Pochette::BchTransactionBuilder do
     transaction.should be_valid
 
     transaction.as_hash.should == {
-      input_total: 7_0000_0000,
-      output_total: 6_9999_0000,
+      input_total: 8_5000_0000,
+      output_total: 8_4999_0000,
       fee: 10000,
       outputs: [
-        ["bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0", 600000000],
-        ["bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05", 99990000]
+        ["bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0", 750000000],
+        ["bchtest:qp82lfltxpfjmr02aqx93kmwe6a32qtkucp4e2cgyd", 99990000]
       ],
       trezor_outputs: [
         { script_type: 'PAYTOADDRESS',
           address: "mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG",
-          amount: "600000000" },
-        { script_type: 'PAYTOSCRIPTHASH',
-          address: "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
+          amount: "750000000" },
+        { script_type: 'PAYTOADDRESS',
+          address: "mnh1Roe5yQe473zZnJLoTjuyRp9L7tZuzj",
           amount: "99990000" },
       ],
       inputs: [
@@ -245,6 +270,9 @@ describe Pochette::BchTransactionBuilder do
         [ "bchtest:pza05cp9mshq7xx5h8e95cwsgv9lv0dhgyux7cru05",
           "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 1, 200000000,
           "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
+        [ "bchtest:qp82lfltxpfjmr02aqx93kmwe6a32qtkucp4e2cgyd", 
+          "9gb1op2beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 0, 150000000, 
+          "19ag1420993489de25302418540f4b410c0c1d3e1d05a988ac"],
         [ "bchtest:pqgn6cjf37zdk79asdh3ng44tesn648xscf0nw69xk",
           "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee", 0, 100000000,
           "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
@@ -264,6 +292,11 @@ describe Pochette::BchTransactionBuilder do
           prev_hash: "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
           prev_index: 1,
           amount: "200000000"
+        },
+        { address_n: [41, 1, 1],
+          prev_hash: "9gb1op2beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
+          prev_index: 0,
+          amount: "150000000"
         },
         { address_n: [42,1,1],
           prev_hash: "eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee",
@@ -310,6 +343,7 @@ describe Pochette::BchTransactionBuilder do
         ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
         ["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1],
         ["1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 1],
+        ["9gb1op2beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 0],
         ["eeeb30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968eee", 0],
       ],
     }

@@ -94,8 +94,8 @@ describe Pochette::BtcTransactionBuilder do
        outputs: outputs, spend_all: true)
     transaction.should be_valid
     transaction.as_hash.should == {
-      input_total: 6_0000_0000,
-      output_total: 5_9999_0000,
+      input_total: 7_5000_0000,
+      output_total: 7_4999_0000,
       fee: 10000,
       inputs: [
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
@@ -106,16 +106,20 @@ describe Pochette::BtcTransactionBuilder do
           1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
         [ "2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9",
           "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
-          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
+          1, 200000000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
+        [ "mnh1Roe5yQe473zZnJLoTjuyRp9L7tZuzj", 
+          "9gb1op2beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 
+          0, 150000000, "19ag1420993489de25302418540f4b410c0c1d3e1d05a988ac"]
       ],
       outputs: [
         ["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 100000000],
-        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 499990000]
+        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 649990000]
       ],
       utxos_to_blacklist: [
         ["956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40", 1],
         ["0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72", 1],
         ["1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 1],
+        ["9gb1op2beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055", 0]
       ]
     }
   end
@@ -223,7 +227,7 @@ describe Pochette::BtcTransactionBuilder do
 
   it 'fails if not enough money for outputs' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
-    outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 7_0000_0000]]
+    outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 9_0000_0000]]
     transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.should_not be_valid
     transaction.errors.should == [:insufficient_funds]
@@ -232,7 +236,7 @@ describe Pochette::BtcTransactionBuilder do
 
   it 'fails if not enough money for outputs' do
     addresses = ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9"]
-    outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 6_0000_0000]]
+    outputs = [["2BLEscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9", 9_0000_0000]]
     transaction = Pochette::BtcTransactionBuilder.new(addresses: addresses, outputs: outputs)
     transaction.should_not be_valid
     transaction.errors.should == [:insufficient_funds]

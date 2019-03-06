@@ -21,6 +21,8 @@ module BackendMocks
         1, 2_0000_0000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
       ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9","1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
         1, 2_0000_0000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
+      ["mnh1Roe5yQe473zZnJLoTjuyRp9L7tZuzj","9gb1op2beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
+        0, 1_5000_0000, "19ag1420993489de25302418540f4b410c0c1d3e1d05a988ac"]
     ]
   end
 
@@ -53,6 +55,17 @@ module BackendMocks
         ]
       },
       { "hash": "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
+        "version": "1", "lock_time": "0",
+        "inputs": [
+          { "prev_hash": "158d6bbe586b4e00347f992e8296532d69f902d0ead32d964b6c87d4f8f0d3ea",
+            "prev_index": 0, "sequence": "\\xffffffff", "script_sig": "SCRIPTSCRIPTSCRIPT" }
+        ],
+        "bin_outputs": [
+          { "amount": 4814421497, "script_pubkey": "5c7837366139..." },
+          { "amount": 681715, "script_pubkey": "5c7861393134..." }
+        ]
+      },
+      { "hash": "9gb1op2beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
         "version": "1", "lock_time": "0",
         "inputs": [
           { "prev_hash": "158d6bbe586b4e00347f992e8296532d69f902d0ead32d964b6c87d4f8f0d3ea",

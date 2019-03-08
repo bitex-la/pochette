@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Pochette::BtcTransactionBuilder do
+describe Pochette::BtcTrezorTransactionBuilder do
   before(:each) do
     Pochette.testnet = true
     Pochette::BtcTrezorTransactionBuilder.backend = double(
@@ -218,6 +218,56 @@ describe Pochette::BtcTransactionBuilder do
     expect(transaction).to be_valid
     expect(Pochette::BtcTrezorTransactionBuilder.backend).not_to have_received :list_unspent
     expect(Pochette::BtcTrezorTransactionBuilder.backend).not_to have_received :list_transactions
+  end
+
+  it 'trezor_inputs use the corresponding script_type' do
+    list_unspent_mock_with_bech32 = 
+      [
+        ["mnh1Roe5yQe473zZnJLoTjuyRp9L7tZuzj","956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
+          1, 2_0000_0000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
+        ["2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9","0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72",
+          1, 2_0000_0000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"],
+        ["tb1qfacwx380krd80kla8kfc2n5pjtj6ranuvz6wdk","1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
+          1, 2_0000_0000, "76a91420993489de25302418540f4b410c0c1d3e1d05a988ac"]
+      ]
+    Pochette::BtcTrezorTransactionBuilder.backend = double(
+      list_unspent: list_unspent_mock_with_bech32,
+      list_transactions: list_transactions_mock
+    )
+    outputs = [["mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG", 5_0000_0000]]
+    addresses = [
+      ['mnh1Roe5yQe473zZnJLoTjuyRp9L7tZuzj', [41, 1, 1]],
+      ['2NAHscN6XVqUPzBSJHC3fhkeF5SQVxiR9p9', [42, 1, 1]],
+      ['tb1qfacwx380krd80kla8kfc2n5pjtj6ranuvz6wdk', [42, 1, 1]]
+    ]
+    transaction = Pochette::BtcTrezorTransactionBuilder.new(
+      bip32_addresses: addresses, outputs: outputs
+    )
+
+    expect(transaction.as_hash[:trezor_inputs]).to eq([
+      {
+        :address_n=>[41, 1, 1],
+        :prev_hash=>
+          "956b30c3c4335f019dbee60c60d76994319473acac356f774c7858cd5c968e40",
+        :prev_index=>1
+      },
+      {
+        :address_n=>[42, 1, 1],
+        :amount=>"200000000",
+        :prev_hash=>
+          "0ded7f014fa3213e9b000bc81b8151bc6f2f926b9afea6e3643c8ad658353c72",
+        :prev_index=>1,
+        :script_type=>"SPENDP2SHWITNESS"
+      },
+      {
+        :address_n=>[42, 1, 1],
+        :amount=>"200000000",
+        :prev_hash=>
+          "1db1f22beb84e5fbe92c8c5e6e7f43d80aa5cfe5d48d83513edd9641fc00d055",
+        :prev_index=>1,
+        :script_type=>"SPENDWITNESS"
+      }
+    ])
   end
 
   it 'receives bip32 addresses and formats output for trezor connect' do

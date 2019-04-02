@@ -124,8 +124,8 @@ class Pochette::BaseTrezorTransactionBuilder < Pochette::BaseTransactionBuilder
 
   def build_trezor_outputs
     self.trezor_outputs = outputs.collect do |address, amount|
-      address = Cashaddress.to_legacy(address) if self.class.force_bip143
-      type = Bitcoin.address_type(address) == :hash160 ? 'PAYTOADDRESS' : 'PAYTOSCRIPTHASH'
+      address_script_type = self.class.force_bip143 ? Cashaddress.to_legacy(address) : address
+      type = Bitcoin.address_type(address_script_type) == :hash160 ? 'PAYTOADDRESS' : 'PAYTOSCRIPTHASH'
       { script_type: type, address: address, amount: amount.to_i.to_s }
     end
   end

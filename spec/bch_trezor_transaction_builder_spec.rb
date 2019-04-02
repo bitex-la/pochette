@@ -40,10 +40,10 @@ describe Pochette::BchTransactionBuilder do
       ],
       trezor_outputs: [
         { script_type: 'PAYTOADDRESS',
-          address: "mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG",
+          address: "bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0",
           amount: "750000000" },
         { script_type: 'PAYTOADDRESS',
-          address: "mnh1Roe5yQe473zZnJLoTjuyRp9L7tZuzj",
+          address: "bchtest:qp82lfltxpfjmr02aqx93kmwe6a32qtkucp4e2cgyd",
           amount: "99990000" },
       ],
       inputs: [
@@ -254,10 +254,10 @@ describe Pochette::BchTransactionBuilder do
       ],
       trezor_outputs: [
         { script_type: 'PAYTOADDRESS',
-          address: "mreXn2qhKo7tnLnA2xCnBUSc1rC3W76FHG",
+          address: "bchtest:qpaps04mxmjkv4xmhua7hmmww4999wlcl5sewjt0m0",
           amount: "750000000" },
         { script_type: 'PAYTOADDRESS',
-          address: "mnh1Roe5yQe473zZnJLoTjuyRp9L7tZuzj",
+          address: "bchtest:qp82lfltxpfjmr02aqx93kmwe6a32qtkucp4e2cgyd",
           amount: "99990000" },
       ],
       inputs: [

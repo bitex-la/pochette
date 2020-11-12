@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in pochette.gemspec
+gem "bitcoin_rpc", github: 'bitex-la/bitcoin-rpc', ref: '30feff8'
+
 gemspec

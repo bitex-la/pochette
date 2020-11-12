@@ -16,9 +16,7 @@ describe Pochette::Backends::BitcoinCore do
     ]
   }
 
-  let(:rpc_url){ 'http://user:pass@server:12345' }
-
-  let(:backend){ Pochette::Backends::BitcoinCore.new(rpc_url) }
+  let(:backend){ Pochette::Backends::BitcoinCore.new('http://user:pass@server:12345') }
 
   def stub_rpc(method, params, *fixtures)
     request = {id: 'jsonrpc', method: method}
@@ -28,8 +26,9 @@ describe Pochette::Backends::BitcoinCore do
       {status: 200, body: open(path)}
     end
 
-    stub_request(:post, rpc_url)
-      .with(body: hash_including(request)).to_return(*responses)
+    stub_request(:post, 'http://server:12345')
+        .with(body: hash_including(request), basic_auth: ['user', 'pass'])
+        .to_return(*responses)
   end
 
   it 'implements incoming_for' do
